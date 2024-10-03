@@ -1,0 +1,120 @@
+
+// $mainColor: #919268;
+// filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+
+// --------------------------------
+
+// $dark: #151D20;
+// filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
+
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+body {
+  background-color: #151D20;
+  // Webkit-браузеры (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: 5px; /* Ширина вертикального скроллбара */
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: transparent; 
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $mainColor;
+    border-radius: 3px;
+  }
+  
+  // Firefox
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: $mainColor transparent;
+  }
+}
+
+[class*="__container"] {
+  width: 100%;
+  max-width: toRem(1440);
+  margin-inline: auto;
+  // @include adaptiveValue("padding-left", 60, 20,0,1440,480);
+  // @include adaptiveValue("padding-right", 60, 20,0,1440,480);
+  @media (min-width:$mobile){
+     padding-left: toRem(60); 
+     padding-right: toRem(60); 
+  }
+  @media (max-width:$mobile){
+    padding-left: toRem(20); 
+    padding-right: toRem(20); 
+  }
+}
+
+%fontFamily {
+  font-family: "StratosLCWeb", sans-serif;
+}
+
+%hoverLine {
+  @media (min-width:$mobileSmall){
+    position: relative;
+    &::before {
+      content:'';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%,0);
+      width: 0%;
+      height: toRem(1);
+      background-color: $mainColor;
+      transition: width .45s ease;
+    }
+    @media (any-hover: hover){
+      &:hover{
+        &::before {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+
+.split-lines,
+.split-words,
+.split-both {
+  font-kerning: none;
+}
+
+
+.element {
+  .line {
+    overflow: hidden;
+  }
+  .word {
+    transform: translateY(100%);
+    transition: transform .55s cubic-bezier(.22,.89,.34,.96);
+  }
+  &._watcher-view {
+    .word {
+      transform: translateY(0);
+      transition-delay: calc(var(--index) * .03s);
+    }
+  }
+}
