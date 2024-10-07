@@ -5,6 +5,7 @@
   left: 0;
   width: 100%;
   z-index: 10;
+	&._who-block {}
   // background-color: $dark;
 	// .header__wrapper
 	&__wrapper {
@@ -23,11 +24,17 @@
       height: toRem(1.5);
 			opacity: 0;
       background-color: $mainColor;
-			transition: width .65s cubic-bezier(.22,.89,.34,.96) 0s, opacity .45s ease;
+			transition: width .65s cubic-bezier(.22,.89,.34,.96) 0s, opacity .45s ease 0s, background-color .3s ease 0s;
 			.loaded & {
 				opacity: 1;
 				width: 100%;
-				transition-delay: 1s;
+				transition: width .65s cubic-bezier(.22,.89,.34,.96) 1s, opacity .45s ease 1s, background-color .3s ease 0s;
+			}
+			._who-block & {
+				background-color: $dark;
+			}
+			.menu-open & {
+				background-color: $mainColor;
 			}
     }
 		@media (min-width:toEm(980.98)){
@@ -57,6 +64,12 @@
 			width: 100%;
 			height: auto;
 			filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+			._who-block & {
+				filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
+			}
+			.menu-open & {
+				filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+			}
 		}
 		@media (min-width:toEm(980.98)){
 			width: toRem(68);
@@ -94,8 +107,7 @@
   &__img {
     height: auto;
     width: 100%;
-    filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
-		
+		filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
   }
 }
 
@@ -121,6 +133,7 @@
 			overflow: auto;
       padding-top: toRem(50);
       padding-bottom: toRem(30);
+			background-color: $dark;
 			transition: opacity .3s ease;
 			pointer-events: none;
 			opacity: 0;
@@ -132,6 +145,7 @@
 				left: 0;
 				top: 0;
 				z-index: 2;
+				background-color: $dark;
 			}
       @media (min-width:$mobile){
         padding-left: toRem(60); 
@@ -144,10 +158,6 @@
 			.menu-open & {
 				opacity: 1;
 				pointer-events: all;
-        background-color: $dark;
-				&::before {
-					background-color: $dark;
-				}
 			}
 		}
   }
@@ -258,13 +268,19 @@
 		}
 		span {
 			display: inline-block;
+			transition: transform .5s cubic-bezier(.22,.89,.34,.96) 0s, color .3s ease;
 			@media (max-width: toEm(980.98)){
-				transition: transform .5s cubic-bezier(.22,.89,.34,.96) 0s;
 				transform: translateY(calc(-100% - 5px));
 				.menu-open & {
 					transform: translateY(0%);
 					transition-delay: .2s;
 				}
+			}
+			._who-block & {
+				color: $dark;
+			}
+			.menu-open & {
+				color: $mainColor;
 			}
 		}
   }
@@ -297,6 +313,9 @@
 			width: 100%;
 			height: toRem(2);
 			background-color: $mainColor;
+			._who-block & {
+				background-color: $dark;
+			}
 		}
 		&::before {
 			top: 0;
@@ -321,6 +340,11 @@
 			&::after {
 				bottom: calc(50% - toRem(1));
 				transform: rotate(45deg);
+			}
+			span,
+			&::before,
+			&::after {
+				background-color: $mainColor;
 			}
 		}
 	}

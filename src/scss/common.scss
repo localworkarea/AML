@@ -84,6 +84,9 @@ body {
       height: toRem(1);
       background-color: $mainColor;
       transition: width .45s ease;
+      ._who-block & {
+        background-color: $dark;
+      }
     }
     @media (any-hover: hover){
       &:hover{

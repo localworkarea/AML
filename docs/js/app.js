@@ -206,6 +206,90 @@
             }));
         }
     }), 0);
+    class DynamicAdapt {
+        constructor(type) {
+            this.type = type;
+        }
+        init() {
+            this.оbjects = [];
+            this.daClassname = "_dynamic_adapt_";
+            this.nodes = [ ...document.querySelectorAll("[data-da]") ];
+            this.nodes.forEach((node => {
+                const data = node.dataset.da.trim();
+                const dataArray = data.split(",");
+                const оbject = {};
+                оbject.element = node;
+                оbject.parent = node.parentNode;
+                оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
+                оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767.98";
+                оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
+                оbject.index = this.indexInParent(оbject.parent, оbject.element);
+                this.оbjects.push(оbject);
+            }));
+            this.arraySort(this.оbjects);
+            this.mediaQueries = this.оbjects.map((({breakpoint}) => `(${this.type}-width: ${breakpoint / 16}em),${breakpoint}`)).filter(((item, index, self) => self.indexOf(item) === index));
+            this.mediaQueries.forEach((media => {
+                const mediaSplit = media.split(",");
+                const matchMedia = window.matchMedia(mediaSplit[0]);
+                const mediaBreakpoint = mediaSplit[1];
+                const оbjectsFilter = this.оbjects.filter((({breakpoint}) => breakpoint === mediaBreakpoint));
+                matchMedia.addEventListener("change", (() => {
+                    this.mediaHandler(matchMedia, оbjectsFilter);
+                }));
+                this.mediaHandler(matchMedia, оbjectsFilter);
+            }));
+        }
+        mediaHandler(matchMedia, оbjects) {
+            if (matchMedia.matches) оbjects.forEach((оbject => {
+                this.moveTo(оbject.place, оbject.element, оbject.destination);
+            })); else оbjects.forEach((({parent, element, index}) => {
+                if (element.classList.contains(this.daClassname)) this.moveBack(parent, element, index);
+            }));
+        }
+        moveTo(place, element, destination) {
+            element.classList.add(this.daClassname);
+            if (place === "last" || place >= destination.children.length) {
+                destination.append(element);
+                return;
+            }
+            if (place === "first") {
+                destination.prepend(element);
+                return;
+            }
+            destination.children[place].before(element);
+        }
+        moveBack(parent, element, index) {
+            element.classList.remove(this.daClassname);
+            if (parent.children[index] !== void 0) parent.children[index].before(element); else parent.append(element);
+        }
+        indexInParent(parent, element) {
+            return [ ...parent.children ].indexOf(element);
+        }
+        arraySort(arr) {
+            if (this.type === "min") arr.sort(((a, b) => {
+                if (a.breakpoint === b.breakpoint) {
+                    if (a.place === b.place) return 0;
+                    if (a.place === "first" || b.place === "last") return -1;
+                    if (a.place === "last" || b.place === "first") return 1;
+                    return 0;
+                }
+                return a.breakpoint - b.breakpoint;
+            })); else {
+                arr.sort(((a, b) => {
+                    if (a.breakpoint === b.breakpoint) {
+                        if (a.place === b.place) return 0;
+                        if (a.place === "first" || b.place === "last") return 1;
+                        if (a.place === "last" || b.place === "first") return -1;
+                        return 0;
+                    }
+                    return b.breakpoint - a.breakpoint;
+                }));
+                return;
+            }
+        }
+    }
+    const da = new DynamicAdapt("max");
+    da.init();
     gsap.registerPlugin(ScrollTrigger);
     document.addEventListener("DOMContentLoaded", (function() {
         function smoothScroll(smoothness = .08, inertia = .85) {
@@ -328,7 +412,9 @@
             const heroSection = document.querySelector(".hero");
             const heroImg = document.querySelector(".hero__img");
             const logoAc = document.querySelector(".logo-ac");
-            if (heroImg && logoAc) {
+            const headerEl = document.querySelector(".header");
+            const whoSection = document.querySelector(".who");
+            if (heroImg) {
                 const scrollPosY = window.pageYOffset;
                 window.scrollTo(0, 0);
                 function getOffset(el) {
@@ -340,7 +426,6 @@
                         height: rect.height
                     };
                 }
-                getOffset(heroImg);
                 const logoAcPosition = getOffset(logoAc);
                 window.scrollTo(0, scrollPosY);
                 gsap.to(heroImg, {
@@ -370,7 +455,76 @@
                     ease: "none"
                 });
             }
+            if (whoSection) gsap.to(headerEl, {
+                scrollTrigger: {
+                    trigger: whoSection,
+                    start: "-5% top",
+                    end: "bottom top",
+                    scrub: 1,
+                    onEnter: () => document.documentElement.classList.add("_who-block"),
+                    onLeave: () => document.documentElement.classList.remove("_who-block"),
+                    onEnterBack: () => document.documentElement.classList.add("_who-block"),
+                    onLeaveBack: () => document.documentElement.classList.remove("_who-block")
+                }
+            });
         }), 200);
+        const valuesContent = document.querySelector(".values__content");
+        const valuesItemsContainer = document.querySelector(".values__items");
+        const valuesItems = document.querySelectorAll(".values__item");
+        const infoItems = document.querySelectorAll(".info-values__item");
+        const lineEl = document.querySelector(".line");
+        const mediaQuery = window.matchMedia("(max-width: 43.811em)");
+        let hoverTimeout;
+        function setVideoContainerHeight(videoContainer) {
+            if (mediaQuery.matches) {
+                const videoWidth = videoContainer.offsetWidth;
+                const videoHeight = videoWidth * (210 / 353);
+                videoContainer.style.height = `${videoHeight}px`;
+            } else videoContainer.style.height = "";
+        }
+        function setActiveClass(index) {
+            infoItems.forEach(((item, i) => {
+                item.classList.remove("_active");
+                const video = item.querySelector("video");
+                const videoContainer = item.querySelector(".info-values__video");
+                if (video) video.pause();
+                if (videoContainer) videoContainer.style.height = "";
+                valuesItems[i].classList.remove("_active");
+            }));
+            hoverTimeout = setTimeout((() => {
+                if (infoItems[index]) {
+                    infoItems[index].classList.add("_active");
+                    valuesItems[index].classList.add("_active");
+                    const activeVideo = infoItems[index].querySelector("video");
+                    const activeVideoContainer = infoItems[index].querySelector(".info-values__video");
+                    if (activeVideo) activeVideo.play();
+                    if (activeVideoContainer) setVideoContainerHeight(activeVideoContainer);
+                }
+            }), 100);
+        }
+        valuesItems.forEach(((item, index) => {
+            item.addEventListener("mouseenter", (event => {
+                event.stopPropagation();
+                clearTimeout(hoverTimeout);
+                setActiveClass(index);
+                valuesItemsContainer.classList.add("_active");
+                lineEl.classList.add("_active");
+            }));
+        }));
+        valuesContent.addEventListener("mouseleave", (event => {
+            event.stopPropagation();
+            clearTimeout(hoverTimeout);
+            infoItems.forEach(((item, i) => {
+                item.classList.remove("_active");
+                const video = item.querySelector("video");
+                const videoContainer = item.querySelector(".info-values__video");
+                if (video) video.pause();
+                if (videoContainer) videoContainer.style.height = "";
+                valuesItems[i].classList.remove("_active");
+            }));
+            valuesItemsContainer.classList.remove("_active");
+            lineEl.classList.remove("_active");
+        }));
     }));
     window.addEventListener("beforeunload", (() => {
         window.scrollTo(0, 0);
@@ -423,6 +577,26 @@
         scroller.style.overscrollBehavior = "none";
     }
     stopOverscroll();
+    window.addEventListener("load", (() => {
+        const mediaQuery = window.matchMedia("(min-width: 43.811em)");
+        function setMaxHeight() {
+            if (mediaQuery.matches) {
+                const infoItems = document.querySelectorAll(".info-values__item");
+                const valuesContent = document.querySelector(".values__content");
+                let maxHeight = 0;
+                infoItems.forEach((item => {
+                    const itemHeight = item.offsetHeight;
+                    if (itemHeight > maxHeight) maxHeight = itemHeight;
+                }));
+                infoItems.forEach((item => {
+                    item.style.minHeight = `${maxHeight}px`;
+                    valuesContent.style.minHeight = `${maxHeight}px`;
+                }));
+            }
+        }
+        setMaxHeight();
+        mediaQuery.addListener(setMaxHeight);
+    }));
     window["FLS"] = false;
     isWebp();
     addLoadedClass();

@@ -1,12 +1,17 @@
 .hero {
   opacity: 0;
   min-height: 100svh;
-  padding-top: toRem(320);      
   
   display: flex;
   .loaded & {
     opacity: 1;
     transition: .2s ease;
+  }
+  @media (min-width:toEm(1100.98)){
+    padding-top: toRem(280);      
+  }
+  @media (max-width: toEm(1100.98)){
+      padding-top: toRem(320);
   }
   @media (min-height:toEm(1440.98)){
     max-height: toRem(1500);
@@ -31,30 +36,20 @@
     @media (min-width:$tablet){
       grid-template-columns: 55% auto;
     }
-    @media (min-width:toEm(820.98)){
-      column-gap: toRem(45);
-    }
+    // @media (min-width:toEm(820.98)){
+    //   column-gap: toRem(45);
+    // }
     @media (max-width:$tablet) and (min-width: toEm(820.98)){
       grid-template-columns: 65% auto;
     }
     @media (min-width:toEm(820.98)){
         display: grid;
     }
-    // @media (max-width:$mobile){
-    //    grid-template-row: toRem(200) auto; 
-    // }
   }
   // .hero__rider
   &__rider {
     @media (min-width:toEm(820.98)){
       order: 2;
-    }
-    @media (max-width: $mobile){
-      //  height: toRem(250); 
-      // width: 100%;
-      // display: block;
-      // height: 250px;
-      //  padding-bottom: 250px;
     }
   }
   // .hero__img
@@ -62,25 +57,44 @@
     position: fixed;
     z-index: 9;
     height: auto;
-    filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
     transform: translate(-50%,0);
-    @media (min-width:toEm(1100.98)){
-      top: 38%;
-      left: 60%;
+    filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+    &._anim-end {
+      z-index: 11;
     }
-    @media (max-width: toEm(1100.98)) and (min-width: toEm(820.98)){
+    ._who-block & {
+      filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
+    }
+    .menu-open & {
+      filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+    }
+    @media (min-width:toEm(1500.98)){
+      top: 38%;
+      left: 70%;
+    }
+    @media (max-width: toEm(1500.98)) and (min-width: toEm(820.98)){
       top: 30%;
-      left: 50%;
+      left: 75%;
+    }
+    // @media (max-width: toEm(1100.98)) and (min-width: toEm(820.98)){
+    //   top: 30%;
+    //   left: 50%;
+    // }
+    @media (min-width:toEm(1100.98)){
+        width: toRem(432);
+    }
+    @media (max-width: toEm(1100.98)) and (min-width: $mobileSmall) {
+         width: toRem(370);
     }
     @media (max-width: toEm(820.98)){
       top: 20%;
       left: 50%;
     }
-    @media (min-width:$mobileSmall){
-      width: 432px;
-    }
+    // @media (min-width:$mobileSmall){
+    //   width: 432px;
+    // }
     @media (max-width:$mobileSmall){
-       width: calc(100wv + 40px); 
+       width: calc(100vw - 40px);
     }
   }
   // .hero__content
@@ -186,25 +200,432 @@
   }
 }
 
+%flexContainer {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: toRem(30);
+}
 
-
-
-
+// === WHO SECTION ===================================
 .who {
   min-height: 100svh;
   background-color: $mainColor;
   color: $dark;
-  @extend %fontFamily;
+  display: flex;
+  @media (min-width:$mobileSmall){
+    padding-top: toRem(130);
+    padding-bottom: toRem(80);
+  }
+  @media (max-width:$mobileSmall){
+    padding-top: toRem(80);
+    padding-bottom: toRem(50);
+  }
   // .who__container
   &__container {
+    @extend %flexContainer;
+  }
+	// .who__content
+	&__content {
+    display: grid;
+    gap: toRem(10);
+    @media (min-width:$mobileSmall){
+      grid-template-columns: 1fr 56%;
+    }
+  }
+	// .who__title
+	&__title {
+  }
+	// .who__right
+	&__right {
+    @extend %fontFamily;
+    p {
+      max-width: toRem(628);
+      @include adaptiveValue("font-size", 20, 16,0,1440.98,480.98);
+    }
+	}
+	// .who__main
+	&__main {
+    display: grid;
+    @media (min-width:$mobileSmall){
+       line-height: 1; 
+    }
+    span {
+      display: inline-block;
+    }
+	}
+  // .who__main--aml
+  &__main--aml {
+    @include adaptiveValue("font-size", 110, 62,0,1440,375);
+  }
+  &__main--av,
+  &__main--acc {
+    @include adaptiveValue("font-size", 110, 90,2,1440,1280.98);
+    @include adaptiveValue("font-size", 90, 58,3,1280.98,375);
+  }
+  // .who__main--av
+  &__main--av {
+  }
+  // .who__main--acc
+  &__main--acc {
+    color: $lihtgGreen;
+    @media (min-width:toEm(1100.98)){
+      grid-column: 2/3;
+    }
+  }
+}
+
+.title-main {
+  @include adaptiveValue("font-size", 22, 20,2,1920,1440.98);
+  @include adaptiveValue("font-size", 20, 22,3,1440.98,768.98);
+}
+
+
+%itemsValuesGrid {
+  display: grid;
+  width: 100%;
+  gap: toRem(20) toRem(8);
+  @media (min-width:toEm(700.98)){
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// === VALUES SECTION ===================================
+.values {
+  min-height: 100svh;
+  background-color: #fff;
+  padding-bottom: toRem(60);
+  display: flex;
+  @media (min-width:$mobileSmall){
+    padding-top: toRem(130);
+  }
+  @media (max-width:$mobileSmall){
+    padding-top: toRem(80);
+  }
+  // .values__container
+  &__container {
+    @extend %flexContainer;
+  }
+	// .values__title
+	&__title {
+    color: $dark;
+	}
+	// .values__content
+	&__content {
+    position: relative;
+    @media (min-width:toEm(700.98)){
+      aspect-ratio: 1320/520;
+    }
+	}
+	// .values__items
+	&__items {
+    @extend %itemsValuesGrid;
+    position: relative;
+    z-index: 0;
+    height: 100%;
+    transition: opacity .35s ease;
+    @media (min-width:toEm(700.98)){
+      &._active {
+        opacity: 0;
+      }
+    }
+	}
+	// .values__item
+	&__item {
+    background-color: $gray;
+    position: relative;
+
+    &:nth-child(1) {
+      .values__body {
+        &::before {
+          @extend %beforeActive;
+        }
+      }
+    }
+    &._active {
+      @media (max-width:toEm(700.98)){
+        .values__body {
+          opacity: 0;
+        }
+      }
+    }
+  }
+	// .values__body
+	&__body {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    @extend %beforCardValues;
+    @include adaptiveValue("padding-top", 50, 30);
+    @include adaptiveValue("padding-bottom", 40, 30);
+    @media (min-width:toEm(700.98)){
+        min-height: 100%;
+    }
+    @media (max-width: toEm(700.98)){
+        position: absolute !important;
+        inset: 0;
+        transition: opacity .3s ease;
+        &::before {
+
+        }
+    }
+	}
+	// .values__sm
+	&__sm {
+    font-size: toRem(50);
+	}
+	// .values__big
+	&__big {
+    line-height: 1;
+    @include adaptiveValue("font-size", 110, 100,2,1920.98,1280.98);
+    @include adaptiveValue("font-size", 100, 60,3,1280.98,820);
+    @media (max-width: toEm(700.98)){
+        font-size: toRem(80) !important;
+    }
+	}
+  // .values__line
+  &__line {
+  }
+}
+
+.info-values {
+  // .info-values__item
+	&__item {
+    transition: opacity .65s ease;
+    opacity: 0;
+    pointer-events: none;
+    @extend %itemsValuesGrid;
+    @media (min-width:toEm(700.98)){
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      width: 100%;
+      aspect-ratio: 1320/520;
+      &::before,
+      &::after {
+        content:'';
+        position: absolute;
+        top: 0;
+        width: calc(33% - 2px);
+        height: 100%;
+      }
+      &::before {
+        left: 67%;
+        z-index: 1;
+        background-color: $dark2;
+      }
+      &:after {
+        left: 0;
+        z-index: 0;
+        background-color: $gray;
+      }
+    }
+    @media (max-width: toEm(700.98)){
+        row-gap: 0;
+        display: block;
+        background-color:$dark2;
+    }
+    &._active {
+      opacity: 1;
+      @media (min-width:toEm(700.98)){
+      &::before {
+        left: 0;
+        transition: left .65s ease .0s;
+      }
+      }
+    }
+	}
+	// .info-values__video
+	&__video {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    @media (min-width:toEm(700.98)){
+      order: 2;
+      grid-column: 2/4;
+    }
+    &--01 {}
+    &--02 {}
+    &--03 {}
+    
+    @media (max-width: toEm(700.98)){
+        height: 0;
+        transition: height .45s ease;
+    }
+    video {
+      @media (max-width: toEm(700.98)){
+        // aspect-ratio: 353/210;
+      }
+    }
+    &::before {
+      @media (min-width:toEm(700.98)){
+        content:'';
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%,0);
+        height: 100%;
+        width: toRem(8);
+        background-color: #fff;
+      }
+    }
+	}
+	// .info-values__card
+	&__card {
+    order: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    @include adaptiveValue("padding", 40, 20,0,1440.98,1280.98);
+    
+    img {
+      height: auto;
+      @include adaptiveValue("width", 140, 124,0,1440.98,480.98);
+      @media (min-width:toEm(700.98)){
+          margin-bottom: toRem(50);
+      }
+      @media (max-width:toEm(700.98)){
+          margin-bottom: toRem(70);
+      }
+    }
+    @media (min-width:toEm(700.98)){
+      z-index: 2;
+    }
+    @media (max-width: toEm(700.98)){
+      background-color: $dark2;
+    }
+	}
+	// .info-values__top
+	&__top {
+    width: 100%;
+    @media (min-width:toEm(700.98)){
+      margin-bottom: toRem(20);
+    }
+    @media (max-width: toEm(700.98)){
+        padding-top: toRem(10);
+        margin-bottom: toRem(40);
+        position: relative;
+        &::before {
+          content:"";
+          position: absolute;
+          top: 55%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          height: toRem(1);
+          width: calc(100%);
+          background-color: $mainColor;
+        }
+    }
+	}
+	// .info-values__title
+	&__title {
+    line-height: 1;
+    @include adaptiveValue("font-size", 50, 40,0,1440.98,1280.98);
+	}
+	// .info-values__txts
+	&__txts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    p {
+      @extend %fontFamily;
+      // font-size: toRem(15);
+      @include adaptiveValue("font-size", 15, 12,0,1440.98,992.98);
+      &:not(:last-child) {
+        @include adaptiveValue("margin-bottom", 10, 7,0,1440.98,480.98);
+      }
+      @media (max-width: toEm(700.98)){
+          font-size: toRem(15) !important;
+      }
+    }
+    @media (max-width: toEm(700.98)){
+        padding-bottom: toRem(15);
+    }
+	}
+}
+
+%beforCardValues {
+  position: relative;
+    &::before {
+      content:'';
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      height: 40%;
+      width: toRem(1);
+      background-color: $mainColor;
+      transition: all .45s ease;
+      @media (min-width:toEm(700.98)){
+        transform: translate(-50%,-60%) rotate(0deg);
+      }
+      @media (max-width: toEm(700.98)){
+          // top: toRem(135) !important;
+          top: 50% !important;
+          height: 38%;
+          transform: translate(-50%,-50%) rotate(0deg);
+          // transform: translate(-50%,-60%) rotate(-90deg);
+      }
+    }
+}
+
+%beforeActive {
+  ._active & {
+    @include adaptiveValue("top", 170, 135,0,1440,1280);
+    @media (min-width:toEm(700.98)){
+      transform: translate(-50%,-60%) rotate(-90deg);
+      height: 60%;
+    }
+    @media (max-width: toEm(850.98)) and (min-width: toEm(700.98)) {
+        height: 45%;
+    }
+  }
+}
+
+.line {
+  @extend %itemsValuesGrid;
+  @media (min-width:toEm(700.98)){
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .65s ease;
+      
+    &._active {
+      opacity: 1;
+    }
+  }
+  @media (max-width: toEm(700.98)){
+    display: none;
+  }
+  // .line__item
+  &__item {
+    @extend %beforCardValues;
+    &:before {
+      @extend %beforeActive;
+    }
   }
 }
 
 
-.values {
+// === ADVANTAGES SECTION ===================================
+.advantages {
   min-height: 100svh;
   background-color: #fff;
-  // .values__container
+
+  // .advantages__container
   &__container {
   }
 }

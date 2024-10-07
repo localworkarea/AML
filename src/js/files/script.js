@@ -191,8 +191,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const heroSection = document.querySelector('.hero');
         const heroImg = document.querySelector('.hero__img');
         const logoAc = document.querySelector('.logo-ac');
+        
+        const headerEl = document.querySelector('.header');
+        const whoSection = document.querySelector('.who');
       
-        if (heroImg && logoAc) {
+        if (heroImg) {
             const scrollPosY = window.pageYOffset;
       
             window.scrollTo(0, 0);
@@ -207,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function() {
               };
             }
       
-            const heroImgInitial = getOffset(heroImg);
             const logoAcPosition = getOffset(logoAc);
       
             window.scrollTo(0, scrollPosY);
@@ -225,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 },
                 onUpdate: (self) => {
                   // Убираем класс, когда движение идет в обратном направлении
-                  if (self.direction < 0) { // Если скроллим обратно (self.direction < 0)
+                  if (self.direction < 0) {
                     heroImg.classList.remove('_anim-end');
                     logoAc.classList.remove('_anim-end');
                   }
@@ -243,9 +245,119 @@ document.addEventListener("DOMContentLoaded", function() {
               ease: "none",
             });
         }
+
+        if (whoSection) {
+          gsap.to(headerEl, {
+            scrollTrigger: {
+              trigger: whoSection,
+              start: "-5% top",
+              end: "bottom top",
+              scrub: 1,
+              onEnter: () => document.documentElement.classList.add('_who-block'),
+              onLeave: () => document.documentElement.classList.remove('_who-block'),
+              onEnterBack: () => document.documentElement.classList.add('_who-block'),
+              onLeaveBack: () => document.documentElement.classList.remove('_who-block'),
+            },
+          });
+        }
     
     }, 200);
+
+    const valuesContent = document.querySelector('.values__content');
+    const valuesItemsContainer = document.querySelector('.values__items');
+    const valuesItems = document.querySelectorAll('.values__item');
+    const infoItems = document.querySelectorAll('.info-values__item');
+    const lineEl = document.querySelector('.line');
+    const mediaQuery = window.matchMedia('(max-width: 43.811em)');
     
+    let hoverTimeout;
+    
+    function setVideoContainerHeight(videoContainer) {
+      if (mediaQuery.matches) { 
+        const videoWidth = videoContainer.offsetWidth; 
+        const videoHeight = videoWidth * (210 / 353); 
+        videoContainer.style.height = `${videoHeight}px`;
+      } else {
+        videoContainer.style.height = ''; 
+      }
+    }
+    
+    // Функция для активации нужного элемента
+    function setActiveClass(index) {
+      infoItems.forEach((item, i) => {
+        item.classList.remove('_active');
+        const video = item.querySelector('video');
+        const videoContainer = item.querySelector('.info-values__video');
+        if (video) {
+          video.pause();
+        }
+        if (videoContainer) {
+          videoContainer.style.height = ''; 
+        }
+        
+        valuesItems[i].classList.remove('_active'); // Убираем класс _active с valuesItems
+      });
+    
+      hoverTimeout = setTimeout(() => {
+        if (infoItems[index]) {
+          infoItems[index].classList.add('_active');
+          valuesItems[index].classList.add('_active'); // Добавляем класс _active к соответствующему элементу valuesItems
+    
+          const activeVideo = infoItems[index].querySelector('video');
+          const activeVideoContainer = infoItems[index].querySelector('.info-values__video');
+          if (activeVideo) {
+            activeVideo.play();
+          }
+          if (activeVideoContainer) {
+            setVideoContainerHeight(activeVideoContainer); 
+          }
+        }
+      }, 100);
+    }
+    
+    valuesItems.forEach((item, index) => {
+      item.addEventListener('mouseenter', (event) => {
+        event.stopPropagation();
+        clearTimeout(hoverTimeout);
+        setActiveClass(index);
+        valuesItemsContainer.classList.add('_active');
+        lineEl.classList.add('_active');
+      });
+    });
+    
+    valuesContent.addEventListener('mouseleave', (event) => {
+      event.stopPropagation();
+      clearTimeout(hoverTimeout);
+    
+      infoItems.forEach((item, i) => {
+        item.classList.remove('_active');
+        const video = item.querySelector('video');
+        const videoContainer = item.querySelector('.info-values__video');
+        if (video) {
+          video.pause();
+        }
+        if (videoContainer) {
+          videoContainer.style.height = '';
+        }
+    
+        valuesItems[i].classList.remove('_active'); // Убираем класс _active при выходе мыши
+      });
+    
+      valuesItemsContainer.classList.remove('_active');
+      lineEl.classList.remove('_active');
+    });
+    
+    
+    // // Отслеживаем изменение размера экрана
+    // window.addEventListener('resize', () => {
+    //   // Пересчитываем высоту контейнера видео при изменении размера окна
+    //   infoItems.forEach(item => {
+    //     const videoContainer = item.querySelector('.info-values__video');
+    //     if (videoContainer) {
+    //       setVideoContainerHeight(videoContainer); // Устанавливаем высоту при ресайзе
+    //     }
+    //   });
+    // });
     
 
 
@@ -266,10 +378,6 @@ window.addEventListener('orientationchange', () => {
   location.reload();
 });
 
-// window.addEventListener('resize', () => {
-//   window.scrollTo(0, 0);
-//   location.reload();
-// });
 
 let lastWindowWidth = window.innerWidth;
 
@@ -350,3 +458,37 @@ function stopOverscroll(element) {
 }
 
 stopOverscroll();
+
+window.addEventListener('load', () => {
+  const mediaQuery = window.matchMedia('(min-width: 43.811em)'); // 43.811em = 701px
+
+  function setMaxHeight() {
+    if (mediaQuery.matches) {
+      const infoItems = document.querySelectorAll('.info-values__item');
+      const valuesContent = document.querySelector('.values__content');
+      let maxHeight = 0;
+
+      // Вычисляем наибольшую высоту
+      infoItems.forEach(item => {
+        const itemHeight = item.offsetHeight;
+        if (itemHeight > maxHeight) {
+          maxHeight = itemHeight;
+        }
+      });
+
+      infoItems.forEach(item => {
+        item.style.minHeight = `${maxHeight}px`;
+        valuesContent.style.minHeight = `${maxHeight}px`;
+      });
+    } else {
+      // document.querySelectorAll('.info-values__item').forEach(item => {
+      //   item.style.minHeight = '';
+      // });
+      // document.querySelector('.values__content').style.minHeight = '';
+    }
+  }
+
+  setMaxHeight();
+
+  mediaQuery.addListener(setMaxHeight);
+});
