@@ -138,17 +138,17 @@ export let bodyUnlock = (delay = 500) => {
 			document.body.style.paddingRight = ''
 			document.documentElement.classList.remove("lock")
 
-					// // ==  Update data-smooth-scroll if it exists
-					// if (document.body.hasAttribute('data-smooth-scroll')) {
-					// 	document.body.setAttribute('data-smooth-scroll', 'true');
-					// }
-					// // =============================================
+					// ==  Update data-smooth-scroll if it exists
+					if (document.body.hasAttribute('data-smooth-scroll')) {
+						document.body.setAttribute('data-smooth-scroll', 'true');
+					}
+					// =============================================
 
-	// == LOCAL CODE - Remove padding from .header
-	const header = document.querySelector('.header');
-	if (header) {
-		header.style.paddingRight = '';
-	}
+					// == LOCAL CODE - Remove padding from .header
+					const header = document.querySelector('.header');
+					if (header) {
+						header.style.paddingRight = '';
+					}
 
 
 		}, delay)
@@ -169,11 +169,11 @@ export let bodyLock = (delay = 500) => {
 		document.body.style.paddingRight = lockPaddingValue
 		document.documentElement.classList.add("lock")
 
-			// // Update data-smooth-scroll if it exists
-			// if (document.body.hasAttribute('data-smooth-scroll')) {
-			// 	document.body.setAttribute('data-smooth-scroll', 'false');
-			// }
-			// // =================================================
+			// Update data-smooth-scroll if it exists
+			if (document.body.hasAttribute('data-smooth-scroll')) {
+				document.body.setAttribute('data-smooth-scroll', 'false');
+			}
+			// =================================================
 
 			// == LOCAL CODE -  Add padding to .header
 			const header = document.querySelector('.header');
@@ -187,7 +187,12 @@ export let bodyLock = (delay = 500) => {
 		}, delay)
 	}
 }
+
 // Модуль роботи зі спойлерами =======================================================================================================================================================================================================================
+
+
+
+
 export function spollers() {
 	const spollersArray = document.querySelectorAll('[data-spollers]');
 	if (spollersArray.length > 0) {
