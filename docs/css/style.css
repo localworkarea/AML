@@ -205,23 +205,6 @@ textarea {
   -o-object-fit: contain;
   object-fit: contain
 }
-html.lenis,
-html.lenis body {
-  height: auto
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto!important
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  -ms-scroll-chaining: none;
-  overscroll-behavior: contain
-}
-.lenis.lenis-stopped {
-  overflow: hidden
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none
-}
 body {
   background-color: #151d20
 }
@@ -320,12 +303,11 @@ body * {
   display: inline-block;
   bottom: -10px;
   opacity: 0;
-  transition: bottom .65s cubic-bezier(.22,.89,.34,.96) 0s,opacity .65s ease
+  transition: bottom .55s cubic-bezier(.22,.89,.34,.96) 0s,opacity .55s ease
 }
 .loaded .header__logo {
   opacity: 1;
-  bottom: 0;
-  transition-delay: 1s
+  bottom: 0
 }
 .header__logo img {
   width: 100%;
@@ -928,6 +910,9 @@ body * {
   ._who-block .menu__link::before,
   .footer__item:not(:last-child) ._who-block .footer__link::before {
     background-color: #151d20
+  }
+  .loaded .header__logo {
+    transition-delay: 1s
   }
   .hero {
     padding-bottom: 14vh
@@ -1696,6 +1681,9 @@ body * {
 @media (max-width:30.06125em) {
   .input {
     font-size: 1.125rem
+  }
+  .loaded .header__logo {
+    transition-delay: .8s
   }
   .hero {
     padding-bottom: 10vh

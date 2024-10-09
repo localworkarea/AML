@@ -54,11 +54,16 @@
 		display: inline-block;
 		bottom: -10px;
 		opacity: 0;
-		transition: bottom .65s cubic-bezier(.22,.89,.34,.96) 0s, opacity .65s ease;
+		transition: bottom .55s cubic-bezier(.22,.89,.34,.96) 0s, opacity .55s ease;
 		.loaded & {
 			opacity: 1;
 			bottom: 0;
-			transition-delay: 1s;
+			@media (min-width:$mobileSmall){
+				transition-delay: 1s;
+			}
+			@media (max-width:$mobileSmall){
+				transition-delay: 0.8s;
+			}
 		}
 		img {
 			width: 100%;

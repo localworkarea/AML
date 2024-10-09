@@ -4056,14 +4056,68 @@
     const da = new DynamicAdapt("max");
     da.init();
     gsap.registerPlugin(ScrollTrigger);
-    const lenis = new Lenis;
-    lenis.on("scroll", (e => {}));
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time => {
-        lenis.raf(time * 1e3);
-    }));
-    gsap.ticker.lagSmoothing(0);
     document.addEventListener("DOMContentLoaded", (function() {
+        function smoothScroll(smoothness = .08, inertia = .85) {
+            let scrollPosition = window.pageYOffset;
+            let targetPosition = scrollPosition;
+            let isScrolling = false;
+            let isDraggingScrollbar = false;
+            function updateScroll() {
+                scrollPosition += (targetPosition - scrollPosition) * smoothness;
+                window.scrollTo(0, scrollPosition);
+                if (Math.abs(targetPosition - scrollPosition) > .5) requestAnimationFrame(updateScroll); else isScrolling = false;
+            }
+            function startScroll(event) {
+                if (!isDraggingScrollbar) {
+                    targetPosition += event.deltaY * inertia;
+                    targetPosition = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetPosition));
+                    event.preventDefault();
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        requestAnimationFrame(updateScroll);
+                    }
+                }
+            }
+            function onScroll() {
+                if (!isScrolling) {
+                    scrollPosition = window.pageYOffset;
+                    targetPosition = scrollPosition;
+                }
+            }
+            function onMouseDown() {
+                isDraggingScrollbar = true;
+            }
+            function onMouseUp() {
+                isDraggingScrollbar = false;
+                scrollPosition = window.pageYOffset;
+                targetPosition = scrollPosition;
+            }
+            function initSmoothScroll() {
+                if (document.body.getAttribute("data-smooth-scroll") === "true") {
+                    window.addEventListener("wheel", startScroll, {
+                        passive: false
+                    });
+                    window.addEventListener("scroll", onScroll);
+                    window.addEventListener("mousedown", onMouseDown);
+                    window.addEventListener("mouseup", onMouseUp);
+                } else {
+                    window.removeEventListener("wheel", startScroll);
+                    window.removeEventListener("scroll", onScroll);
+                    window.removeEventListener("mousedown", onMouseDown);
+                    window.removeEventListener("mouseup", onMouseUp);
+                }
+            }
+            const observer = new MutationObserver((mutations => {
+                mutations.forEach((mutation => {
+                    if (mutation.attributeName === "data-smooth-scroll") initSmoothScroll();
+                }));
+            }));
+            observer.observe(document.body, {
+                attributes: true
+            });
+            initSmoothScroll();
+        }
+        if (document.body.getAttribute("data-smooth-scroll") === "true") smoothScroll(.1, .85);
         const splitTextLines = document.querySelectorAll(".split-lines");
         const splitTextWords = document.querySelectorAll(".split-words");
         const splitTextChars = document.querySelectorAll(".split-chars");
