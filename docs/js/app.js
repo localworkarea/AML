@@ -4275,6 +4275,22 @@
             }));
         }
     }));
+    window.addEventListener("beforeunload", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("orientationchange", (() => {
+        window.scrollTo(0, 0);
+        location.reload();
+    }));
+    let lastWindowWidth = window.innerWidth;
+    window.addEventListener("resize", (() => {
+        const currentWindowWidth = window.innerWidth;
+        if (currentWindowWidth !== lastWindowWidth) {
+            window.scrollTo(0, 0);
+            location.reload();
+        }
+        lastWindowWidth = currentWindowWidth;
+    }));
     window.addEventListener("load", (() => {
         const mediaQuery = window.matchMedia("(min-width: 43.811em)");
         function setMaxHeight() {

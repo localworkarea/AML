@@ -406,32 +406,32 @@ document.addEventListener("DOMContentLoaded", function() {
   // ------------------------------
 
 
-//   // Сброс скролла при перезагрузке страницы
-// window.addEventListener('beforeunload', () => {
-//   window.scrollTo(0, 0);
-// });
+  // Сброс скролла при перезагрузке страницы
+window.addEventListener('beforeunload', () => {
+  window.scrollTo(0, 0);
+});
 
-// // Сброс скролла при повороте экрана или изменении размеров окна
-// window.addEventListener('orientationchange', () => {
-//   window.scrollTo(0, 0);
-//   location.reload();
-// });
+// Сброс скролла при повороте экрана или изменении размеров окна
+window.addEventListener('orientationchange', () => {
+  window.scrollTo(0, 0);
+  location.reload();
+});
 
 
-// let lastWindowWidth = window.innerWidth;
+let lastWindowWidth = window.innerWidth;
 
-// window.addEventListener('resize', () => {
-//   const currentWindowWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+  const currentWindowWidth = window.innerWidth;
   
-//   // Проверяем, изменилось ли значение ширины
-//   if (currentWindowWidth !== lastWindowWidth) {
-//     window.scrollTo(0, 0);
-//     location.reload(); // Обновляем страницу только при изменении ширины
-//   }
+  // Проверяем, изменилось ли значение ширины
+  if (currentWindowWidth !== lastWindowWidth) {
+    window.scrollTo(0, 0);
+    location.reload(); // Обновляем страницу только при изменении ширины
+  }
   
-//   // Обновляем значение ширины для будущих сравнений
-//   lastWindowWidth = currentWindowWidth;
-// });
+  // Обновляем значение ширины для будущих сравнений
+  lastWindowWidth = currentWindowWidth;
+});
 
 
 
