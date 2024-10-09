@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 	<!-- <style>body{opacity: 0;}</style> -->
-	<link rel="stylesheet" href="css/style.min.css?_v=20241008155536">
+	<link rel="stylesheet" href="css/style.min.css?_v=20241009183144">
 	<link rel="shortcut icon" href="favicon.ico">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -24,27 +24,27 @@
 						<nav class="menu__body">
 							<ul class="menu__list">
 								<li class="menu__item">
-									<a href="#" class="menu__link" aria-label="link to a section on the page">
+									<a href="#" data-goto=".who" data-goto-speed="1700" class="menu__link" aria-label="link to a section on the page">
 										<span>Who we are</span>
 									</a>
 								</li>
 								<li class="menu__item">
-									<a href="#" class="menu__link" aria-label="link to a section on the page">
+									<a href="#" data-goto=".values" data-goto-speed="1700" class="menu__link" aria-label="link to a section on the page">
 										<span>Our main principals</span>
 									</a>
 								</li>
 								<li class="menu__item">
-									<a href="#" class="menu__link" aria-label="link to a section on the page">
+									<a href="#" data-goto=".advantages" data-goto-speed="1700" class="menu__link" aria-label="link to a section on the page">
 										<span>Our advantages</span>
 									</a>
 								</li>
 								<li class="menu__item">
-									<a href="#" class="menu__link" aria-label="link to a section on the page">
+									<a href="#" data-goto=".focus" data-goto-speed="1700" class="menu__link" aria-label="link to a section on the page">
 										<span>Our main focus</span>
 									</a>
 								</li>
 								<li class="menu__item">
-									<a href="#" class="menu__link" aria-label="link to a section on the page">
+									<a href="#" data-goto=".contacts" data-goto-speed="1700" class="menu__link" aria-label="link to a section on the page">
 										<span>Contact form</span>
 									</a>
 								</li>
@@ -65,7 +65,7 @@
 				<div class="hero__container">
 					<div class="hero__body">
 						<div class="hero__rider">
-							<!-- <img class="hero__img" src="img/icons/logo.svg" width="353" height="185" alt="a rider on a horse with a spear in his hands"> -->
+							<img class="hero__img" src="img/icons/logo.svg" width="353" height="185" alt="a rider on a horse with a spear in his hands">
 						</div>
 						<div class="hero__content">
 							<h1 class="hero__title">
@@ -145,7 +145,7 @@
 							</div>
 							<div class="info-values__card">
 								<div class="info-values__top">
-									<!-- <img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands"> -->
+									<img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands">
 									<p class="info-values__title">
 										We Are Fast
 									</p>
@@ -166,7 +166,7 @@
 							</div>
 							<div class="info-values__card">
 								<div class="info-values__top">
-									<!-- <img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands"> -->
+									<img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands">
 									<p class="info-values__title">
 										We Are Brave
 									</p>
@@ -187,7 +187,7 @@
 							</div>
 							<div class="info-values__card">
 								<div class="info-values__top">
-									<!-- <img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands"> -->
+									<img src="img/icons/logo2.svg" width="124" height="65" alt="a rider on a horse with a spear in his hands">
 									<p class="info-values__title">
 										We Are Powerful
 									</p>
@@ -200,30 +200,299 @@
 								</div>
 							</div>
 						</div>
-						<div class="values__line line" aria-hidden="true">
-							<div class="line__item"></div>
+						<div class="values__line line-values" aria-hidden="true">
+							<div class="line-values__item"></div>
 						</div>
 					</div>
 				</div>
 			</section>
 			<section class="advantages">
 				<div class="advantages__container">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit quisquam quia facere atque natus praesentium quidem soluta tempore hic temporibus, magnam architecto laudantium. Voluptates ex ipsa vitae, a excepturi eligendi?</p><br><br><br><br><br><br><br>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit quisquam quia facere atque natus praesentium quidem soluta tempore hic temporibus, magnam architecto laudantium. Voluptates ex ipsa vitae, a excepturi eligendi?</p><br><br><br><br><br><br><br>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit quisquam quia facere atque natus praesentium quidem soluta tempore hic temporibus, magnam architecto laudantium. Voluptates ex ipsa vitae, a excepturi eligendi?</p><br><br><br><br><br><br><br>
+					<h2 class="advantages__title title-main">
+						Our Advantages
+					</h2>
+					<div class="advantages__content">
+						<div class="advantages__slider swiper">
+							<div class="advantages__wrapper swiper-wrapper">
+								<div class="advantages__slide slide-advt swiper-slide">
+									<article class="slide-advt__body">
+										<div class="slide-advt__left">
+											<p class="slide-advt__num">01</p>
+											<h3 class="slide-advt__title split-both">
+												Business<br> Intelligence
+											</h3>
+										</div>
+										<div class="slide-advt__right right-block">
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Comprehensive Insights
+												</p>
+												<p class="right-block__sm">
+													Our business intelligence capabilities provide a deep understanding of market trends, customer behavior, and competitive landscapes to inform strategic decision-making.
+												</p>
+											</div>
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Tailored Solutions
+												</p>
+												<p class="right-block__sm">
+													We tailor our data-driven insights to the unique needs of each project, ensuring that our clients make informed, actionable decisions.
+												</p>
+											</div>
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Competitive Advantage
+												</p>
+												<p class="right-block__sm">
+													By leveraging our business intelligence, our partners gain a competitive edge in their respective industries, positioning them for long-term success.
+												</p>
+											</div>
+										</div>
+									</article>
+								</div>
+								<div class="advantages__slide slide-advt swiper-slide">
+									<article class="slide-advt__body">
+										<div class="slide-advt__left">
+											<p class="slide-advt__num">02</p>
+											<h3 class="slide-advt__title split-both">
+												Strategic<br> Planning
+											</h3>
+										</div>
+										<div class="slide-advt__right right-block">
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Visioning
+												</p>
+												<p class="right-block__sm">
+													We work with our partners/companies to define their long-term vision and establish clear, achievable goals that align with their aspirations.
+												</p>
+											</div>
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Management
+												</p>
+												<p class="right-block__sm">
+													Our strategic planning process maps out the steps and milestones to help companies achieve their goals providing a specialized advisory services in specific spheres (marketing, finance, etc.).
+												</p>
+											</div>
+											<div class="right-block__clm">
+												<p class="right-block__big">
+													Control
+												</p>
+												<p class="right-block__sm">
+													We continuously monitor the progress.
+												</p>
+											</div>
+										</div>
+									</article>
+								</div>
+								<div class="advantages__slide slide-advt swiper-slide">
+									<article class="slide-advt__body">
+										<div class="slide-advt__left">
+											<p class="slide-advt__num">03</p>
+											<h3 class="slide-advt__title split-both">
+												Integration into<br> the Ecosystem
+											</h3>
+										</div>
+										<div class="slide-advt__right right-block">
+											<p class="right-block__big">
+												Smooth integration of new companies and projects.
+												<br><br>
+												Achievement of synergy among existing companies
+											</p>
+										</div>
+									</article>
+								</div>
+								<div class="advantages__slide slide-advt swiper-slide">
+									<article class="slide-advt__body">
+										<div class="slide-advt__left">
+											<p class="slide-advt__num">04</p>
+											<h3 class="slide-advt__title split-both">
+												Strategic Hire<br> of Top Managers
+											</h3>
+										</div>
+										<div class="slide-advt__right right-block">
+											<p class="right-block__big">
+												The strategic hire of top managers is crucial for businesses to gain a competitive advantage, plan effectively for hiring, and attract the best talent in the industry.
+											</p>
+										</div>
+									</article>
+								</div>
+								<div class="advantages__slide slide-advt swiper-slide">
+									<article class="slide-advt__body">
+										<div class="slide-advt__left">
+											<p class="slide-advt__num">05</p>
+											<h3 class="slide-advt__title split-both">
+												Access to the<br> Network of Contacts
+											</h3>
+										</div>
+										<div class="slide-advt__right right-block">
+											<p class="right-block__big">
+												Our extensive network of industry-leading professionals allows us to identify and attract the best partnership opportunities for our companies.
+											</p>
+										</div>
+									</article>
+								</div>
+							</div>
+							<div class="advantages__pagination swiper-pagination"></div>
+							<div class="advantages__buttons">
+								<button type="button" class="advantages__button swiper-button-prev" aria-label="to prev slide">
+									<svg width="18" height="33" viewBox="0 0 18 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M0.956146 17.0577L16.4522 0.487702L17.5478 1.51226L3.04385 17.0214L17.5296 31.4689L16.4704 32.531L0.956146 17.0577Z" fill="#919268" />
+									</svg>
+								</button>
+								<button type="button" class="advantages__button swiper-button-next" aria-label="to next slide">
+									<svg width="18" height="33" viewBox="0 0 18 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M17.0439 15.9423L1.54779 32.5123L0.452219 31.4877L14.9562 15.9786L0.470371 1.53105L1.52963 0.468994L17.0439 15.9423Z" fill="#919268" />
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="focus">
+				<div class="focus__container">
+					<h2 class="focus__title title-main">
+						Our main Focus
+					</h2>
+					<p class="focus__subtitle">
+						<span>Gambling</span> First Approach
+					</p>
+				</div>
+				<div class="focus__el">
+					<img class="focus__img ibg" src="img/focus/focus.webp" width="1440" height="800" alt="Image">
+				</div>
+			</section>
+			<section class="contacts">
+				<div class="contacts__container">
+					<h2 class="contacts__title title-main">
+						Contacts
+					</h2>
+					<div class="contacts__body">
+						<div class="contacts__adrs adrs">
+							<address class="adrs__block">
+								<div class="adrs__item">
+									<p>Address:</p>
+									<a href="https://maps.app.goo.gl/4mDV29tWyQWwu3mf8" target="_blank" class="adrs__link" aria-label="link to maps">
+										Vashiotis Business Center, Iakovou Tompazi 1, Limassol 3107, Cyprus
+									</a>
+								</div>
+								<div class="adrs__item">
+									<p>Address:</p>
+									<a href="mailto:hello@aml.pro" class="adrs__link" aria-label="link to mail app">
+										hello@aml.pro
+									</a>
+								</div>
+							</address>
+							<p class="adrs__txt">
+								<span>Fast.</span><span>Brave.</span><span>Powerful</span>
+							</p>
+						</div>
+						<div class="contacts__form form">
+							<form class="form__form" data-ajax action="#" method="POST">
+								<div class="form__item">
+									<input type="text" name="name" placeholder="Name" class="input" required>
+								</div>
+								<div class="form__item">
+									<input type="text" name="lastName" placeholder="Last Name" class="input" required>
+								</div>
+								<div class="form__item">
+									<input type="email" name="email" placeholder="Email" class="input" required>
+								</div>
+								<div class="form__item">
+									<input type="tel" name="tel" placeholder="+38 (___) __ __" class="input" required>
+								</div>
+								<button type="submit" class="form__button" aria-label="submit form button">Send</button>
+							</form>
+						</div>
+					</div>
 				</div>
 			</section>
 		</main>
 		<footer class="footer">
 			<div class="footer__container">
+				<img class="footer__logo" src="img/icons/logo_aml.svg" width="69" height="31" alt="logo AML">
+				<div class="footer__top">
+					<nav class="footer__nav">
+						<ul class="footer__list">
+							<li class="footer__item">
+								<a href="#" data-goto=".who" data-goto-speed="1700" class="footer__link" aria-label="link to a section on the page">
+									Who we are
+								</a>
+							</li>
+							<li class="footer__item">
+								<a href="#" data-goto=".values" data-goto-speed="1700" class="footer__link" aria-label="link to a section on the page">
+									Our main principals
+								</a>
+							</li>
+							<li class="footer__item">
+								<a href="#" data-goto=".advantages" data-goto-speed="1700" class="footer__link" aria-label="link to a section on the page">
+									Our advantages
+								</a>
+							</li>
+							<li class="footer__item">
+								<a href="#" data-goto=".focus" data-goto-speed="1700" class="footer__link" aria-label="link to a section on the page">
+									Our main focus
+								</a>
+							</li>
+							<li class="footer__item">
+								<a href="#" data-goto=".contacts" data-goto-speed="1700" class="footer__link link-form" aria-label="link to a section on the page">
+									Contact form
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+				<div class="footer__bottom">
+					<div class="footer__social">
+						<ul class="social__list">
+							<li class="social__item">
+								<a href="#" class="social__link">
+									<img src="img/icons/facebook.svg" width="40" height="40" alt="icon social">
+								</a>
+							</li>
+							<li class="social__item">
+								<a href="#" class="social__link">
+									<img src="img/icons/instagram.svg" width="40" height="40" alt="icon social">
+								</a>
+							</li>
+							<li class="social__item">
+								<a href="#" class="social__link">
+									<img src="img/icons/telegram.svg" width="40" height="40" alt="icon social">
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="footer__pages pages">
+						<ul class="pages__list">
+							<li class="pages__item">
+								<a href="#" class="pages__link" aria-label="link to the page">
+									Usage policy
+								</a>
+							</li>
+							<li class="pages__item">
+								<a href="#" class="pages__link" aria-label="link to the page">
+									Cookies
+								</a>
+							</li>
+							<li class="pages__item">
+								<a href="#" class="pages__link" aria-label="link to the page">
+									Privacy
+								</a>
+							</li>
+						</ul>
+						<p class="pages__copy">© AML 2024</p>
+					</div>
+				</div>
 			</div>
 		</footer>
 	</div>
-	<script src="https://unpkg.com/split-type?_v=20241008155536"></script>
-	<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js?_v=20241008155536"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241008155536"></script>
-	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241008155536"></script>
-	<script src="js/app.min.js?_v=20241008155536"></script>
+	<script src="https://unpkg.com/split-type?_v=20241009183144"></script>
+	<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js?_v=20241009183144"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js?_v=20241009183144"></script>
+	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js?_v=20241009183144"></script>
+	<script src="js/app.min.js?_v=20241009183144"></script>
 </body>
 
 </html>

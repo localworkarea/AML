@@ -171,14 +171,26 @@ document.addEventListener("DOMContentLoaded", function() {
     // Инициализация SplitType при загрузке
     initSplitType();
     
+    // // Создаем ResizeObserver для отслеживания изменений размера окна
+    // const resizeObserver = new ResizeObserver(entries => {
+    //   entries.forEach(entry => {
+    //     initSplitType();
+    //   });
+    // });
+    // // Наблюдаем за изменениями в элементе body (можно выбрать другой контейнер, если нужно)
+    // resizeObserver.observe(document.body);
+    
     // Создаем ResizeObserver для отслеживания изменений размера окна
     const resizeObserver = new ResizeObserver(entries => {
-      entries.forEach(entry => {
-        initSplitType();
+      requestAnimationFrame(() => {
+        entries.forEach(entry => {
+          initSplitType();
+        });
       });
     });
     // Наблюдаем за изменениями в элементе body (можно выбрать другой контейнер, если нужно)
     resizeObserver.observe(document.body);
+
     // =======================================================================
 
 
@@ -194,6 +206,10 @@ document.addEventListener("DOMContentLoaded", function() {
         
         const headerEl = document.querySelector('.header');
         const whoSection = document.querySelector('.who');
+
+        const focusSection = document.querySelector('.focus');
+        const focusSubTitle = document.querySelector('.focus__subtitle');
+        const focusEl = document.querySelector('.focus__el');
       
         if (heroImg) {
             const scrollPosY = window.pageYOffset;
@@ -251,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
             scrollTrigger: {
               trigger: whoSection,
               start: "-5% top",
-              end: "bottom top",
+              // end: "bottom top",
               scrub: 1,
               onEnter: () => document.documentElement.classList.add('_who-block'),
               onLeave: () => document.documentElement.classList.remove('_who-block'),
@@ -260,205 +276,162 @@ document.addEventListener("DOMContentLoaded", function() {
             },
           });
         }
+
+        if (focusSection) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: focusSection,
+              start: "top 10%", 
+              end: "bottom top",
+              scrub: 1, 
+              anticipatePin: 1,
+            }
+          });
+          tl.to(focusSubTitle, {
+            top: "50%",
+            duration: 2
+          });
+          tl.to(focusEl, {
+            top: "50%",
+            duration: 3,
+          }, "<0.5");
+          tl.to(focusEl, {
+            width: "100%",
+            height: "100%",
+            top: "50%",
+            duration: 3,
+          });
+          ScrollTrigger.create({
+            trigger: focusSection,
+            start: "top top",
+            end: "+=1200",
+            scrub: true,
+            pin: focusSection,
+          });
+        }
+        
     
-    }, 200);
+    }, 500);
 
     const valuesContent = document.querySelector('.values__content');
     const valuesItemsContainer = document.querySelector('.values__items');
     const valuesItems = document.querySelectorAll('.values__item');
     const infoItems = document.querySelectorAll('.info-values__item');
-    const lineEl = document.querySelector('.line');
+    const lineEl = document.querySelector('.line-values');
     const mediaQuery = window.matchMedia('(max-width: 43.811em)');
-    
-    let hoverTimeout;
-    
-    function setVideoContainerHeight(videoContainer) {
-      if (mediaQuery.matches) { 
-        const videoWidth = videoContainer.offsetWidth; 
-        const videoHeight = videoWidth * (210 / 353); 
-        videoContainer.style.height = `${videoHeight}px`;
-      } else {
-        videoContainer.style.height = ''; 
-      }
-    }
-    
-    // Функция для активации нужного элемента
-    function setActiveClass(index) {
-      infoItems.forEach((item, i) => {
-        item.classList.remove('_active');
-        const video = item.querySelector('video');
-        const videoContainer = item.querySelector('.info-values__video');
-        if (video) {
-          video.pause();
-        }
-        if (videoContainer) {
+
+    if (valuesItemsContainer && valuesItems) {
+      let hoverTimeout;
+      
+      function setVideoContainerHeight(videoContainer) {
+        if (mediaQuery.matches) { 
+          const videoWidth = videoContainer.offsetWidth; 
+          const videoHeight = videoWidth * (210 / 353); 
+          videoContainer.style.height = `${videoHeight}px`;
+        } else {
           videoContainer.style.height = ''; 
         }
-        
-        valuesItems[i].classList.remove('_active'); // Убираем класс _active с valuesItems
+      }
+      
+      // Функция для активации нужного элемента
+      function setActiveClass(index) {
+        infoItems.forEach((item, i) => {
+          item.classList.remove('_active');
+          const video = item.querySelector('video');
+          const videoContainer = item.querySelector('.info-values__video');
+          if (video) {
+            video.pause();
+          }
+          if (videoContainer) {
+            videoContainer.style.height = ''; 
+          }
+          
+          valuesItems[i].classList.remove('_active'); // Убираем класс _active с valuesItems
+        });
+      
+        hoverTimeout = setTimeout(() => {
+          if (infoItems[index]) {
+            infoItems[index].classList.add('_active');
+            valuesItems[index].classList.add('_active'); // Добавляем класс _active к соответствующему элементу valuesItems
+      
+            const activeVideo = infoItems[index].querySelector('video');
+            const activeVideoContainer = infoItems[index].querySelector('.info-values__video');
+            if (activeVideo) {
+              activeVideo.play();
+            }
+            if (activeVideoContainer) {
+              setVideoContainerHeight(activeVideoContainer); 
+            }
+          }
+        }, 100);
+      }
+      
+      valuesItems.forEach((item, index) => {
+        item.addEventListener('mouseenter', (event) => {
+          event.stopPropagation();
+          clearTimeout(hoverTimeout);
+          setActiveClass(index);
+          valuesItemsContainer.classList.add('_active');
+          lineEl.classList.add('_active');
+        });
       });
-    
-      hoverTimeout = setTimeout(() => {
-        if (infoItems[index]) {
-          infoItems[index].classList.add('_active');
-          valuesItems[index].classList.add('_active'); // Добавляем класс _active к соответствующему элементу valuesItems
-    
-          const activeVideo = infoItems[index].querySelector('video');
-          const activeVideoContainer = infoItems[index].querySelector('.info-values__video');
-          if (activeVideo) {
-            activeVideo.play();
-          }
-          if (activeVideoContainer) {
-            setVideoContainerHeight(activeVideoContainer); 
-          }
-        }
-      }, 100);
-    }
-    
-    valuesItems.forEach((item, index) => {
-      item.addEventListener('mouseenter', (event) => {
+      
+      valuesContent.addEventListener('mouseleave', (event) => {
         event.stopPropagation();
         clearTimeout(hoverTimeout);
-        setActiveClass(index);
-        valuesItemsContainer.classList.add('_active');
-        lineEl.classList.add('_active');
+      
+        infoItems.forEach((item, i) => {
+          item.classList.remove('_active');
+          const video = item.querySelector('video');
+          const videoContainer = item.querySelector('.info-values__video');
+          if (video) {
+            video.pause();
+          }
+          if (videoContainer) {
+            videoContainer.style.height = '';
+          }
+      
+          valuesItems[i].classList.remove('_active'); // Убираем класс _active при выходе мыши
+        });
+      
+        valuesItemsContainer.classList.remove('_active');
+        lineEl.classList.remove('_active');
       });
-    });
-    
-    valuesContent.addEventListener('mouseleave', (event) => {
-      event.stopPropagation();
-      clearTimeout(hoverTimeout);
-    
-      infoItems.forEach((item, i) => {
-        item.classList.remove('_active');
-        const video = item.querySelector('video');
-        const videoContainer = item.querySelector('.info-values__video');
-        if (video) {
-          video.pause();
-        }
-        if (videoContainer) {
-          videoContainer.style.height = '';
-        }
-    
-        valuesItems[i].classList.remove('_active'); // Убираем класс _active при выходе мыши
-      });
-    
-      valuesItemsContainer.classList.remove('_active');
-      lineEl.classList.remove('_active');
-    });
-    
-    
-    // // Отслеживаем изменение размера экрана
-    // window.addEventListener('resize', () => {
-    //   // Пересчитываем высоту контейнера видео при изменении размера окна
-    //   infoItems.forEach(item => {
-    //     const videoContainer = item.querySelector('.info-values__video');
-    //     if (videoContainer) {
-    //       setVideoContainerHeight(videoContainer); // Устанавливаем высоту при ресайзе
-    //     }
-    //   });
-    // });
-    
-
-
-
-
-
-  });
-
-
-  // Сброс скролла при перезагрузке страницы
-window.addEventListener('beforeunload', () => {
-  window.scrollTo(0, 0);
-});
-
-// Сброс скролла при повороте экрана или изменении размеров окна
-window.addEventListener('orientationchange', () => {
-  window.scrollTo(0, 0);
-  location.reload();
-});
-
-
-let lastWindowWidth = window.innerWidth;
-
-window.addEventListener('resize', () => {
-  const currentWindowWidth = window.innerWidth;
+    }
   
-  // Проверяем, изменилось ли значение ширины
-  if (currentWindowWidth !== lastWindowWidth) {
-    window.scrollTo(0, 0);
-    location.reload(); // Обновляем страницу только при изменении ширины
-  }
+
+
+    // -------------------------------------
+  }); // end DOMContentLoaded ---------------------------------------------------------------
+  // ------------------------------
+
+
+//   // Сброс скролла при перезагрузке страницы
+// window.addEventListener('beforeunload', () => {
+//   window.scrollTo(0, 0);
+// });
+
+// // Сброс скролла при повороте экрана или изменении размеров окна
+// window.addEventListener('orientationchange', () => {
+//   window.scrollTo(0, 0);
+//   location.reload();
+// });
+
+
+// let lastWindowWidth = window.innerWidth;
+
+// window.addEventListener('resize', () => {
+//   const currentWindowWidth = window.innerWidth;
   
-  // Обновляем значение ширины для будущих сравнений
-  lastWindowWidth = currentWindowWidth;
-});
-
-
-// function stopOverscroll(element) {
-//   element = gsap.utils.toArray(element)[0] || window;
-//   (element === document.body || element === document.documentElement) && (element = window);
-//     let lastScroll = 0,
-//     lastTouch,
-//     forcing,
-//     forward = true,
-//     isRoot = element === window,
-//     scroller = isRoot ? document.scrollingElement : element,
-//     ua = window.navigator.userAgent + "",
-//     getMax = isRoot
-//       ? () => scroller.scrollHeight - window.innerHeight
-//       : () => scroller.scrollHeight - scroller.clientHeight,
-//     addListener = (type, func) =>
-//       element.addEventListener(type, func, { passive: false }),
-//     revert = () => {
-//       scroller.style.overflowY = "auto";
-//       forcing = false;
-//     },
-//     kill = () => {
-//       forcing = true;
-//       scroller.style.overflowY = "hidden";
-//       !forward && scroller.scrollTop < 1
-//         ? (scroller.scrollTop = 1)
-//         : (scroller.scrollTop = getMax() - 1);
-//       setTimeout(revert, 1);
-//     },
-//     handleTouch = (e) => {
-//       let evt = e.changedTouches ? e.changedTouches[0] : e,
-//         forward = evt.pageY <= lastTouch;
-//       if (
-//         ((!forward && scroller.scrollTop <= 1) ||
-//           (forward && scroller.scrollTop >= getMax() - 1)) &&
-//         e.type === "touchmove"
-//       ) {
-//         e.preventDefault();
-//       } else {
-//         lastTouch = evt.pageY;
-//       }
-//     },
-//     handleScroll = (e) => {
-//       if (!forcing) {
-//         let scrollTop = scroller.scrollTop;
-//         forward = scrollTop > lastScroll;
-//         if (
-//           (!forward && scrollTop < 1) ||
-//           (forward && scrollTop >= getMax() - 1)
-//         ) {
-//           e.preventDefault();
-//           kill();
-//         }
-//         lastScroll = scrollTop;
-//       }
-//     };
-//   if ("ontouchend" in document && !!ua.match(/Version\/[\d\.]+.*Safari/)) {
-//     addListener("scroll", handleScroll);
-//     addListener("touchstart", handleTouch);
-//     addListener("touchmove", handleTouch);
+//   // Проверяем, изменилось ли значение ширины
+//   if (currentWindowWidth !== lastWindowWidth) {
+//     window.scrollTo(0, 0);
+//     location.reload(); // Обновляем страницу только при изменении ширины
 //   }
-//   scroller.style.overscrollBehavior = "none";
-// }
-
-// stopOverscroll();
-
+  
+//   // Обновляем значение ширины для будущих сравнений
+//   lastWindowWidth = currentWindowWidth;
+// });
 
 
 
@@ -468,32 +441,27 @@ window.addEventListener('load', () => {
   const mediaQuery = window.matchMedia('(min-width: 43.811em)'); // 43.811em = 701px
 
   function setMaxHeight() {
-    if (mediaQuery.matches) {
-      const infoItems = document.querySelectorAll('.info-values__item');
-      const valuesContent = document.querySelector('.values__content');
-      let maxHeight = 0;
+    const infoItems = document.querySelectorAll('.info-values__item');
+    const infoCards = document.querySelectorAll('.info-values__card');
+    const valuesContent = document.querySelector('.values__content');
 
-      // Вычисляем наибольшую высоту
-      infoItems.forEach(item => {
-        const itemHeight = item.offsetHeight;
-        if (itemHeight > maxHeight) {
-          maxHeight = itemHeight;
+    if (mediaQuery.matches) {
+      let maxHeight = 0;
+      infoCards.forEach((card, index) => {
+        const cardHeight = card.getBoundingClientRect().height;
+        if (cardHeight > maxHeight) {
+          maxHeight = cardHeight;
         }
       });
 
       infoItems.forEach(item => {
         item.style.minHeight = `${maxHeight}px`;
-        valuesContent.style.minHeight = `${maxHeight}px`;
       });
-    } else {
-      // document.querySelectorAll('.info-values__item').forEach(item => {
-      //   item.style.minHeight = '';
-      // });
-      // document.querySelector('.values__content').style.minHeight = '';
+      valuesContent.style.minHeight = `${maxHeight}px`;
+
     }
   }
 
   setMaxHeight();
-
-  mediaQuery.addListener(setMaxHeight);
+  mediaQuery.addEventListener('change', setMaxHeight);
 });
