@@ -4214,7 +4214,7 @@
                     pin: focusSection
                 });
             }
-        }), 500);
+        }), 200);
         const valuesContent = document.querySelector(".values__content");
         const valuesItemsContainer = document.querySelector(".values__items");
         const valuesItems = document.querySelectorAll(".values__item");
