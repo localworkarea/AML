@@ -82,6 +82,11 @@
             if (window.FLS) console.log(message);
         }), 0);
     }
+    function uniqArray(array) {
+        return array.filter((function(item, index, self) {
+            return self.indexOf(item) === index;
+        }));
+    }
     let gotoBlock = (targetBlock, noHeader = false, speed = 500, offsetTop = 0) => {
         const targetBlockElement = document.querySelector(targetBlock);
         if (targetBlockElement) {
@@ -3883,6 +3888,109 @@
     window.addEventListener("load", (function(e) {
         initSliders();
     }));
+    class ScrollWatcher {
+        constructor(props) {
+            let defaultConfig = {
+                logging: true
+            };
+            this.config = Object.assign(defaultConfig, props);
+            this.observer;
+            !document.documentElement.classList.contains("watcher") ? this.scrollWatcherRun() : null;
+        }
+        scrollWatcherUpdate() {
+            this.scrollWatcherRun();
+        }
+        scrollWatcherRun() {
+            document.documentElement.classList.add("watcher");
+            this.scrollWatcherConstructor(document.querySelectorAll("[data-watch]"));
+        }
+        scrollWatcherConstructor(items) {
+            if (items.length) {
+                this.scrollWatcherLogging(`Прокинувся, стежу за об'єктами (${items.length})...`);
+                let uniqParams = uniqArray(Array.from(items).map((function(item) {
+                    if (item.dataset.watch === "navigator" && !item.dataset.watchThreshold) {
+                        let valueOfThreshold;
+                        if (item.clientHeight > 2) {
+                            valueOfThreshold = window.innerHeight / 2 / (item.clientHeight - 1);
+                            if (valueOfThreshold > 1) valueOfThreshold = 1;
+                        } else valueOfThreshold = 1;
+                        item.setAttribute("data-watch-threshold", valueOfThreshold.toFixed(2));
+                    }
+                    return `${item.dataset.watchRoot ? item.dataset.watchRoot : null}|${item.dataset.watchMargin ? item.dataset.watchMargin : "0px"}|${item.dataset.watchThreshold ? item.dataset.watchThreshold : 0}`;
+                })));
+                uniqParams.forEach((uniqParam => {
+                    let uniqParamArray = uniqParam.split("|");
+                    let paramsWatch = {
+                        root: uniqParamArray[0],
+                        margin: uniqParamArray[1],
+                        threshold: uniqParamArray[2]
+                    };
+                    let groupItems = Array.from(items).filter((function(item) {
+                        let watchRoot = item.dataset.watchRoot ? item.dataset.watchRoot : null;
+                        let watchMargin = item.dataset.watchMargin ? item.dataset.watchMargin : "0px";
+                        let watchThreshold = item.dataset.watchThreshold ? item.dataset.watchThreshold : 0;
+                        if (String(watchRoot) === paramsWatch.root && String(watchMargin) === paramsWatch.margin && String(watchThreshold) === paramsWatch.threshold) return item;
+                    }));
+                    let configWatcher = this.getScrollWatcherConfig(paramsWatch);
+                    this.scrollWatcherInit(groupItems, configWatcher);
+                }));
+            } else this.scrollWatcherLogging("Сплю, немає об'єктів для стеження. ZzzZZzz");
+        }
+        getScrollWatcherConfig(paramsWatch) {
+            let configWatcher = {};
+            if (document.querySelector(paramsWatch.root)) configWatcher.root = document.querySelector(paramsWatch.root); else if (paramsWatch.root !== "null") this.scrollWatcherLogging(`Эмм... батьківського об'єкта ${paramsWatch.root} немає на сторінці`);
+            configWatcher.rootMargin = paramsWatch.margin;
+            if (paramsWatch.margin.indexOf("px") < 0 && paramsWatch.margin.indexOf("%") < 0) {
+                this.scrollWatcherLogging(`йой, налаштування data-watch-margin потрібно задавати в PX або %`);
+                return;
+            }
+            if (paramsWatch.threshold === "prx") {
+                paramsWatch.threshold = [];
+                for (let i = 0; i <= 1; i += .005) paramsWatch.threshold.push(i);
+            } else paramsWatch.threshold = paramsWatch.threshold.split(",");
+            configWatcher.threshold = paramsWatch.threshold;
+            return configWatcher;
+        }
+        scrollWatcherCreate(configWatcher) {
+            console.log(configWatcher);
+            this.observer = new IntersectionObserver(((entries, observer) => {
+                entries.forEach((entry => {
+                    this.scrollWatcherCallback(entry, observer);
+                }));
+            }), configWatcher);
+        }
+        scrollWatcherInit(items, configWatcher) {
+            this.scrollWatcherCreate(configWatcher);
+            items.forEach((item => this.observer.observe(item)));
+        }
+        scrollWatcherIntersecting(entry, targetElement) {
+            if (entry.isIntersecting) {
+                !targetElement.classList.contains("_watcher-view") ? targetElement.classList.add("_watcher-view") : null;
+                this.scrollWatcherLogging(`Я бачу ${targetElement.classList}, додав клас _watcher-view`);
+            } else {
+                targetElement.classList.contains("_watcher-view") ? targetElement.classList.remove("_watcher-view") : null;
+                this.scrollWatcherLogging(`Я не бачу ${targetElement.classList}, прибрав клас _watcher-view`);
+            }
+        }
+        scrollWatcherOff(targetElement, observer) {
+            observer.unobserve(targetElement);
+            this.scrollWatcherLogging(`Я перестав стежити за ${targetElement.classList}`);
+        }
+        scrollWatcherLogging(message) {
+            this.config.logging ? FLS(`[Спостерігач]: ${message}`) : null;
+        }
+        scrollWatcherCallback(entry, observer) {
+            const targetElement = entry.target;
+            this.scrollWatcherIntersecting(entry, targetElement);
+            targetElement.hasAttribute("data-watch-once") && entry.isIntersecting ? this.scrollWatcherOff(targetElement, observer) : null;
+            document.dispatchEvent(new CustomEvent("watcherCallback", {
+                detail: {
+                    entry
+                }
+            }));
+        }
+    }
+    flsModules.watcher = new ScrollWatcher({});
     let addWindowScrollEvent = false;
     function pageNavigation() {
         document.addEventListener("click", pageNavigationAction);
@@ -4173,17 +4281,25 @@
             }));
         }));
         resizeObserver.observe(document.body);
+        const valuesSection = document.querySelector(".values");
+        const valuesContent = document.querySelector(".values__content");
+        const valuesItemsContainer = document.querySelector(".values__items");
+        const valuesItems = document.querySelectorAll(".values__item");
+        const infoItems = document.querySelectorAll(".info-values__item");
+        const lineEl = document.querySelector(".line-values");
+        const heroSection = document.querySelector(".hero");
+        const heroImg = document.querySelector(".hero__img");
+        const logoAc = document.querySelector(".logo-ac");
+        const headerEl = document.querySelector(".header");
+        const whoSection = document.querySelector(".who");
+        const focusSection = document.querySelector(".focus");
+        const focusSubTitle = document.querySelector(".focus__subtitle");
+        const focusEl = document.querySelector(".focus__el");
+        const footerSection = document.querySelector(".footer");
+        const footerContainer = document.querySelector(".footer__container");
         setTimeout((() => {
             ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             ScrollTrigger.refresh();
-            const heroSection = document.querySelector(".hero");
-            const heroImg = document.querySelector(".hero__img");
-            const logoAc = document.querySelector(".logo-ac");
-            const headerEl = document.querySelector(".header");
-            const whoSection = document.querySelector(".who");
-            const focusSection = document.querySelector(".focus");
-            const focusSubTitle = document.querySelector(".focus__subtitle");
-            const focusEl = document.querySelector(".focus__el");
             if (heroImg) {
                 const scrollPosY = window.pageYOffset;
                 window.scrollTo(0, 0);
@@ -4229,6 +4345,7 @@
                 scrollTrigger: {
                     trigger: whoSection,
                     start: "-5% top",
+                    end: "bottom top",
                     scrub: 1,
                     onEnter: () => document.documentElement.classList.add("_who-block"),
                     onLeave: () => document.documentElement.classList.remove("_who-block"),
@@ -4240,7 +4357,7 @@
                 const tl = gsap.timeline({
                     scrollTrigger: {
                         trigger: focusSection,
-                        start: "top 10%",
+                        start: "top center",
                         end: "bottom top",
                         scrub: 1,
                         anticipatePin: 1
@@ -4248,12 +4365,12 @@
                 });
                 tl.to(focusSubTitle, {
                     top: "50%",
-                    duration: 2
+                    duration: 3
                 });
                 tl.to(focusEl, {
                     top: "50%",
                     duration: 3
-                }, "<0.5");
+                });
                 tl.to(focusEl, {
                     width: "100%",
                     height: "100%",
@@ -4263,17 +4380,60 @@
                 ScrollTrigger.create({
                     trigger: focusSection,
                     start: "top top",
-                    end: "+=1200",
+                    endTriger: focusSection,
                     scrub: true,
                     pin: focusSection
                 });
             }
+            let breakPoint = 43.811;
+            let mm = gsap.matchMedia();
+            mm.add({
+                isDesktop: `(min-width: ${breakPoint}em)`,
+                isMobile: `(max-width: ${breakPoint}em)`
+            }, (context => {
+                let {isDesktop, isMobile} = context.conditions;
+                if (isDesktop) {
+                    if (valuesSection) {
+                        const scrollTriggerConfig = {
+                            trigger: valuesSection,
+                            start: "top center",
+                            end: "90% bottom",
+                            scrub: 1,
+                            onUpdate: function(self) {
+                                let progress = self.progress;
+                                if (progress > 0 && progress < 1) valuesSection.classList.remove("_show-el"); else valuesSection.classList.add("_show-el");
+                            }
+                        };
+                        gsap.to(valuesItems, {
+                            y: 0,
+                            duration: 3,
+                            stagger: .6,
+                            scrollTrigger: scrollTriggerConfig
+                        });
+                        gsap.to(infoItems, {
+                            y: 0,
+                            duration: 1,
+                            scrollTrigger: scrollTriggerConfig
+                        });
+                        gsap.to(lineEl, {
+                            y: 0,
+                            duration: 1,
+                            scrollTrigger: scrollTriggerConfig
+                        });
+                    }
+                    if (footerSection) gsap.to(footerContainer, {
+                        transform: "translate(0%, 0%)",
+                        scrollTrigger: {
+                            trigger: footerSection,
+                            start: "top bottom",
+                            end: "bottom bottom",
+                            scrub: true
+                        }
+                    });
+                }
+                if (isMobile) ;
+            }));
         }), 200);
-        const valuesContent = document.querySelector(".values__content");
-        const valuesItemsContainer = document.querySelector(".values__items");
-        const valuesItems = document.querySelectorAll(".values__item");
-        const infoItems = document.querySelectorAll(".info-values__item");
-        const lineEl = document.querySelector(".line-values");
         const mediaQuery = window.matchMedia("(max-width: 43.811em)");
         if (valuesItemsContainer && valuesItems) {
             let hoverTimeout;
@@ -4306,6 +4466,7 @@
             }
             valuesItems.forEach(((item, index) => {
                 item.addEventListener("mouseenter", (event => {
+                    if (!mediaQuery.matches) if (!valuesSection.classList.contains("_show-el")) return;
                     event.stopPropagation();
                     clearTimeout(hoverTimeout);
                     setActiveClass(index);
@@ -4314,8 +4475,10 @@
                 }));
             }));
             valuesContent.addEventListener("mouseleave", (event => {
+                if (mediaQuery.matches) return;
                 event.stopPropagation();
                 clearTimeout(hoverTimeout);
+                if (!valuesSection.classList.contains("_show-el")) return;
                 infoItems.forEach(((item, i) => {
                     item.classList.remove("_active");
                     const video = item.querySelector("video");
@@ -4327,6 +4490,28 @@
                 valuesItemsContainer.classList.remove("_active");
                 lineEl.classList.remove("_active");
             }));
+            if (!mediaQuery.matches) {
+                const observer = new MutationObserver((mutationsList => {
+                    for (let mutation of mutationsList) if (mutation.attributeName === "class") {
+                        const hasShowEl = valuesSection.classList.contains("_show-el");
+                        if (!hasShowEl) {
+                            infoItems.forEach(((item, i) => {
+                                item.classList.remove("_active");
+                                const video = item.querySelector("video");
+                                const videoContainer = item.querySelector(".info-values__video");
+                                if (video) video.pause();
+                                if (videoContainer) videoContainer.style.height = "";
+                                valuesItems[i].classList.remove("_active");
+                            }));
+                            valuesItemsContainer.classList.remove("_active");
+                            lineEl.classList.remove("_active");
+                        }
+                    }
+                }));
+                observer.observe(valuesSection, {
+                    attributes: true
+                });
+            }
         }
     }));
     window.addEventListener("beforeunload", (() => {

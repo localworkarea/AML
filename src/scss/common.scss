@@ -98,6 +98,12 @@ body {
   }
 }
 
+.title-main {
+  @extend %splitAnim;
+  @include adaptiveValue("font-size", 22, 20,2,1920,1440.98);
+  @include adaptiveValue("font-size", 20, 22,3,1440.98,768.98);
+}
+
 
 .split-lines,
 .split-words,
@@ -106,18 +112,25 @@ body {
 }
 
 
-.element {
-  .line {
-    overflow: hidden;
-  }
-  .word {
-    transform: translateY(100%);
-    transition: transform .55s cubic-bezier(.22,.89,.34,.96);
-  }
-  &._watcher-view {
+%splitAnim {
+  &.split-both,
+  .split-both {
+    .line {
+      overflow: hidden;
+    }
+    &._watcher-view {
+      .word {
+        transform: translateY(0);
+        transition-delay: calc(0.3s + var(--index) * 0.03s);
+      }
+    }
     .word {
-      transform: translateY(0);
-      transition-delay: calc(var(--index) * .03s);
+      transform: translateY(100%);
+      transition: transform .55s cubic-bezier(.22,.89,.34,.96);
+      ._watcher-view & {
+          transform: translateY(0);
+          transition-delay: calc(0.3s + var(--index) * 0.03s);
+      }
     }
   }
 }
