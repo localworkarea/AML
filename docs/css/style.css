@@ -1428,6 +1428,9 @@ body * {
   .hero__img {
     width: 27rem
   }
+  .who__main {
+    grid-template-columns: auto 1fr
+  }
   .who__main--acc {
     grid-column: 2/3
   }

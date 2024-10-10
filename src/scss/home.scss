@@ -254,6 +254,9 @@
 	// .who__main
 	&__main {
     display: grid;
+    @media (min-width:toEm(1100.98)){
+        grid-template-columns: auto 1fr;
+    }
     @media (min-width:$mobileSmall){
       //  line-height: 1; 
     }

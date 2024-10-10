@@ -17,93 +17,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 
-
-
-document.addEventListener("DOMContentLoaded", function() {
-
-
-  // 1. ПЛАВНАЯ ПРОКРУТКА СТРАНИЦЫ =========================
-  function smoothScroll(smoothness = 0.08, inertia = 0.85) {
-    let scrollPosition = window.pageYOffset;
-    let targetPosition = scrollPosition;
-    let isScrolling = false;
-    let isDraggingScrollbar = false;
-  
-    function updateScroll() {
-        scrollPosition += (targetPosition - scrollPosition) * smoothness;
-        window.scrollTo(0, scrollPosition);
-  
-        if (Math.abs(targetPosition - scrollPosition) > 0.5) {
-            requestAnimationFrame(updateScroll);
-        } else {
-            isScrolling = false;
-        }
-    }
-  
-    function startScroll(event) {
-        if (!isDraggingScrollbar) {
-            targetPosition += event.deltaY * inertia;
-            targetPosition = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetPosition));
-            event.preventDefault();
-  
-            if (!isScrolling) {
-                isScrolling = true;
-                requestAnimationFrame(updateScroll);
-            }
-        }
-    }
-  
-    function onScroll() {
-        if (!isScrolling) {
-            scrollPosition = window.pageYOffset;
-            targetPosition = scrollPosition;
-        }
-    }
-  
-    function onMouseDown() {
-        isDraggingScrollbar = true;
-    }
-  
-    function onMouseUp() {
-        isDraggingScrollbar = false;
-        scrollPosition = window.pageYOffset;
-        targetPosition = scrollPosition;
-    }
-  
-    function initSmoothScroll() {
-        if (document.body.getAttribute('data-smooth-scroll') === 'true') {
-            window.addEventListener('wheel', startScroll, { passive: false });
-            window.addEventListener('scroll', onScroll);
-            window.addEventListener('mousedown', onMouseDown);
-            window.addEventListener('mouseup', onMouseUp);
-        } else {
-            window.removeEventListener('wheel', startScroll);
-            window.removeEventListener('scroll', onScroll);
-            window.removeEventListener('mousedown', onMouseDown);
-            window.removeEventListener('mouseup', onMouseUp);
-        }
-    }
-  
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === 'data-smooth-scroll') {
-                initSmoothScroll();
-            }
-        });
-    });
-  
-    observer.observe(document.body, { attributes: true });
-  
-    initSmoothScroll();
-  }
-  
-  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
-    smoothScroll(0.1, 0.85);
-  }
-  // =======================================================================
-
-
-
      // == SPLIT TYPE =========================================================
      const splitTextLines = document.querySelectorAll('.split-lines');
      const splitTextWords = document.querySelectorAll('.split-words');
@@ -194,6 +107,95 @@ document.addEventListener("DOMContentLoaded", function() {
      resizeObserver.observe(document.body);
   
      // =======================================================================
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+
+
+  // 1. ПЛАВНАЯ ПРОКРУТКА СТРАНИЦЫ =========================
+  function smoothScroll(smoothness = 0.08, inertia = 0.85) {
+    let scrollPosition = window.pageYOffset;
+    let targetPosition = scrollPosition;
+    let isScrolling = false;
+    let isDraggingScrollbar = false;
+  
+    function updateScroll() {
+        scrollPosition += (targetPosition - scrollPosition) * smoothness;
+        window.scrollTo(0, scrollPosition);
+  
+        if (Math.abs(targetPosition - scrollPosition) > 0.5) {
+            requestAnimationFrame(updateScroll);
+        } else {
+            isScrolling = false;
+        }
+    }
+  
+    function startScroll(event) {
+        if (!isDraggingScrollbar) {
+            targetPosition += event.deltaY * inertia;
+            targetPosition = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetPosition));
+            event.preventDefault();
+  
+            if (!isScrolling) {
+                isScrolling = true;
+                requestAnimationFrame(updateScroll);
+            }
+        }
+    }
+  
+    function onScroll() {
+        if (!isScrolling) {
+            scrollPosition = window.pageYOffset;
+            targetPosition = scrollPosition;
+        }
+    }
+  
+    function onMouseDown() {
+        isDraggingScrollbar = true;
+    }
+  
+    function onMouseUp() {
+        isDraggingScrollbar = false;
+        scrollPosition = window.pageYOffset;
+        targetPosition = scrollPosition;
+    }
+  
+    function initSmoothScroll() {
+        if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+            window.addEventListener('wheel', startScroll, { passive: false });
+            window.addEventListener('scroll', onScroll);
+            window.addEventListener('mousedown', onMouseDown);
+            window.addEventListener('mouseup', onMouseUp);
+        } else {
+            window.removeEventListener('wheel', startScroll);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mouseup', onMouseUp);
+        }
+    }
+  
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'data-smooth-scroll') {
+                initSmoothScroll();
+            }
+        });
+    });
+  
+    observer.observe(document.body, { attributes: true });
+  
+    initSmoothScroll();
+  }
+  
+  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+    smoothScroll(0.1, 0.85);
+  }
+  // =======================================================================
+
+
+
+
      
 
      const valuesSection = document.querySelector('.values');

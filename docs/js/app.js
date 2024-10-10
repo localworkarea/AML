@@ -4164,6 +4164,61 @@
     const da = new DynamicAdapt("max");
     da.init();
     gsap.registerPlugin(ScrollTrigger);
+    const splitTextLines = document.querySelectorAll(".split-lines");
+    const splitTextWords = document.querySelectorAll(".split-words");
+    const splitTextChars = document.querySelectorAll(".split-chars");
+    const splitTextBoth = document.querySelectorAll(".split-both");
+    const splitSetSpan = document.querySelectorAll(".split-words.set-span");
+    function initSplitType() {
+        if (splitTextLines.length > 0) splitTextLines.forEach((element => {
+            new SplitType(element, {
+                types: "lines"
+            });
+        }));
+        if (splitTextWords.length > 0) splitTextWords.forEach((element => {
+            new SplitType(element, {
+                types: "words"
+            });
+            const words = element.querySelectorAll(".word");
+            words.forEach(((word, index) => {
+                word.style.setProperty("--index", index);
+            }));
+        }));
+        if (splitTextChars.length > 0) splitTextChars.forEach((element => {
+            new SplitType(element, {
+                types: "chars"
+            });
+            const chars = element.querySelectorAll(".char");
+            chars.forEach(((char, index) => {
+                char.style.setProperty("--index", index);
+            }));
+        }));
+        if (splitTextBoth.length > 0) splitTextBoth.forEach((element => {
+            new SplitType(element, {
+                types: "lines, words"
+            });
+            const words = element.querySelectorAll(".word");
+            words.forEach(((word, index) => {
+                word.style.setProperty("--index", index);
+            }));
+        }));
+        if (splitSetSpan.length > 0) splitSetSpan.forEach((splitSetSpan => {
+            const words = splitSetSpan.querySelectorAll(".word");
+            words.forEach((word => {
+                const text = word.textContent.trim();
+                word.innerHTML = `<span class="word-span">${text}</span>`;
+            }));
+        }));
+    }
+    initSplitType();
+    const resizeObserver = new ResizeObserver((entries => {
+        requestAnimationFrame((() => {
+            entries.forEach((entry => {
+                initSplitType();
+            }));
+        }));
+    }));
+    resizeObserver.observe(document.body);
     document.addEventListener("DOMContentLoaded", (function() {
         function smoothScroll(smoothness = .08, inertia = .85) {
             let scrollPosition = window.pageYOffset;
@@ -4226,61 +4281,6 @@
             initSmoothScroll();
         }
         if (document.body.getAttribute("data-smooth-scroll") === "true") smoothScroll(.1, .85);
-        const splitTextLines = document.querySelectorAll(".split-lines");
-        const splitTextWords = document.querySelectorAll(".split-words");
-        const splitTextChars = document.querySelectorAll(".split-chars");
-        const splitTextBoth = document.querySelectorAll(".split-both");
-        const splitSetSpan = document.querySelectorAll(".split-words.set-span");
-        function initSplitType() {
-            if (splitTextLines.length > 0) splitTextLines.forEach((element => {
-                new SplitType(element, {
-                    types: "lines"
-                });
-            }));
-            if (splitTextWords.length > 0) splitTextWords.forEach((element => {
-                new SplitType(element, {
-                    types: "words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach(((word, index) => {
-                    word.style.setProperty("--index", index);
-                }));
-            }));
-            if (splitTextChars.length > 0) splitTextChars.forEach((element => {
-                new SplitType(element, {
-                    types: "chars"
-                });
-                const chars = element.querySelectorAll(".char");
-                chars.forEach(((char, index) => {
-                    char.style.setProperty("--index", index);
-                }));
-            }));
-            if (splitTextBoth.length > 0) splitTextBoth.forEach((element => {
-                new SplitType(element, {
-                    types: "lines, words"
-                });
-                const words = element.querySelectorAll(".word");
-                words.forEach(((word, index) => {
-                    word.style.setProperty("--index", index);
-                }));
-            }));
-            if (splitSetSpan.length > 0) splitSetSpan.forEach((splitSetSpan => {
-                const words = splitSetSpan.querySelectorAll(".word");
-                words.forEach((word => {
-                    const text = word.textContent.trim();
-                    word.innerHTML = `<span class="word-span">${text}</span>`;
-                }));
-            }));
-        }
-        initSplitType();
-        const resizeObserver = new ResizeObserver((entries => {
-            requestAnimationFrame((() => {
-                entries.forEach((entry => {
-                    initSplitType();
-                }));
-            }));
-        }));
-        resizeObserver.observe(document.body);
         const valuesSection = document.querySelector(".values");
         const valuesContent = document.querySelector(".values__content");
         const valuesItemsContainer = document.querySelector(".values__items");
