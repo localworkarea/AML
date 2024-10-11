@@ -387,7 +387,8 @@ body * {
 }
 .hero {
   opacity: 0;
-  display: flex
+  display: flex;
+  background-color: #151d20
 }
 .loaded .hero {
   opacity: 1;

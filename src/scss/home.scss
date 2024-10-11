@@ -10,6 +10,7 @@
 .hero {
   opacity: 0;
   display: flex;
+  background-color: $dark;
   @extend %sectionsHeigth;
   .loaded & {
     opacity: 1;
