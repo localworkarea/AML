@@ -15,7 +15,45 @@ gsap.registerPlugin(ScrollTrigger);
 // })
 // gsap.ticker.lagSmoothing(0)
 
+window.addEventListener('load', function() {
+  const header = document.querySelector('.header');
+  const headerIconMenu = document.querySelector('.icon-menu');
+  const lockPaddingElements = document.querySelectorAll("[data-lp]")
+  const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
+  lockPaddingElements.forEach(lockPaddingElement => {
+    lockPaddingElement.style.paddingRight = lockPaddingValue
+  });
 
+  document.body.style.paddingRight = lockPaddingValue
+  document.documentElement.classList.add("lock")
+	if (header) {
+    headerIconMenu.style.pointerEvents = "none";
+		header.style.paddingRight = lockPaddingValue;
+	}
+  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+    document.body.setAttribute('data-smooth-scroll', 'false');
+  }
+  setTimeout(function() {
+    
+    if (document.documentElement.classList.contains('lock')) {
+        lockPaddingElements.forEach(lockPaddingElement => {
+          lockPaddingElement.style.paddingRight = ''
+        });
+        document.body.style.paddingRight = ''
+        document.documentElement.classList.remove("lock")
+        const header = document.querySelector('.header');
+					if (header) {
+            headerIconMenu.style.pointerEvents = "all";
+						header.style.paddingRight = '';
+					}
+
+    }
+
+    if (document.body.getAttribute('data-smooth-scroll') === 'false') {
+      document.body.setAttribute('data-smooth-scroll', 'true');
+    }
+  }, 1500);
+});
 
 
 

@@ -316,7 +316,7 @@
 		@media (any-hover: none) {
 			cursor: default;
 		}
-		span,
+		// span,
 		&::before,
 		&::after {
 			content: "";
@@ -331,10 +331,10 @@
 			}
 		}
 		&::before {
-			top: 0;
+			top: 20%;
 		}
 		&::after {
-			bottom: 0;
+			bottom: 20%;
 		}
 		span {
 			top: calc(50% - toRem(1));

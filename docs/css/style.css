@@ -1697,7 +1697,6 @@ body * {
     opacity: 1;
     transition-delay: 1.4s
   }
-  .icon-menu span,
   .icon-menu::after,
   .icon-menu::before {
     content: "";
@@ -1708,16 +1707,15 @@ body * {
     height: .125rem;
     background-color: #919268
   }
-  ._who-block .icon-menu span,
   ._who-block .icon-menu::after,
   ._who-block .icon-menu::before {
     background-color: #151d20
   }
   .icon-menu::before {
-    top: 0
+    top: 20%
   }
   .icon-menu::after {
-    bottom: 0
+    bottom: 20%
   }
   .icon-menu span {
     top: calc(50% - .0625rem)
