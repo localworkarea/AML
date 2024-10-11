@@ -16,6 +16,51 @@ gsap.registerPlugin(ScrollTrigger);
 // gsap.ticker.lagSmoothing(0)
 
 
+
+window.addEventListener('pagehide', () => {
+  window.scrollTo(0, 0);
+});
+
+// window.addEventListener('unload', () => {
+//   window.scrollTo(0, 0);
+// });
+
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
+
+// Сброс скролла при перезагрузке страницы
+window.addEventListener('beforeunload', () => {
+window.scrollTo(0, 0);
+});
+
+// Сброс скролла при повороте экрана или изменении размеров окна
+window.addEventListener('orientationchange', () => {
+window.scrollTo(0, 0);
+location.reload();
+});
+
+
+let lastWindowWidth = window.innerWidth;
+
+window.addEventListener('resize', () => {
+const currentWindowWidth = window.innerWidth;
+
+// Проверяем, изменилось ли значение ширины
+if (currentWindowWidth !== lastWindowWidth) {
+  window.scrollTo(0, 0);
+  location.reload();
+}
+
+// Обновляем значение ширины для будущих сравнений
+lastWindowWidth = currentWindowWidth;
+});
+
+
+
+
+
 window.addEventListener('load', function() {
   const header = document.querySelector('.header');
   const headerIconMenu = document.querySelector('.icon-menu');
@@ -262,55 +307,6 @@ document.addEventListener("DOMContentLoaded", function() {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         ScrollTrigger.refresh();
 
-      //   if (heroImg) {
-      //     const scrollPosY = window.pageYOffset;
-      //     window.scrollTo(0, 0);
-    
-      //     function getOffset(el) {
-      //       const rect = el.getBoundingClientRect();
-      //       return {
-      //         top: rect.top + window.pageYOffset,
-      //         left: rect.left + window.pageXOffset,
-      //         width: rect.width,
-      //         height: rect.height
-      //       };
-      //     }
-    
-      //     const logoAcPosition = getOffset(logoAc);
-      //     window.scrollTo(0, scrollPosY);
-    
-      //     gsap.to(heroImg, {
-      //       scrollTrigger: {
-      //         trigger: heroSection,
-      //         start: "top top",
-      //         end: "80% center",
-      //         scrub: 1,
-      //         onEnter: () => {
-      //           // Удаляем класс при начале анимации
-      //           heroImg.classList.remove('_anim-end');
-      //           logoAc.classList.remove('_anim-end');
-      //         },
-      //         onUpdate: (self) => {
-      //           // Убираем класс, когда движение идет в обратном направлении
-      //           if (self.direction < 0) {
-      //             heroImg.classList.remove('_anim-end');
-      //             logoAc.classList.remove('_anim-end');
-      //           }
-      //         },
-      //         onLeave: () => {
-      //           // Добавляем класс, когда скроллим до конца секции
-      //           heroImg.classList.add('_anim-end');
-      //           logoAc.classList.add('_anim-end');
-      //         }
-      //       },
-      //       width: logoAcPosition.width,
-      //       left: logoAcPosition.left + logoAcPosition.width / 2,
-      //       top: logoAcPosition.top + logoAcPosition.height / 2,
-      //       ease: "none",
-      //     });
-      // }
-
-
       if (heroImg) {
 
         // 1. устанавливаем начальные значения
@@ -418,11 +414,6 @@ document.addEventListener("DOMContentLoaded", function() {
           });
         }
       }
-      
-
-
-
-
 
       if (whoSection) {
         gsap.to(headerEl, {
@@ -540,8 +531,6 @@ document.addEventListener("DOMContentLoaded", function() {
               });
             }
            
-          }
-          if (isMobile) {
           }
         });
       
@@ -693,46 +682,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // ------------------------------
 
 
-  window.addEventListener('unload', () => {
-    window.scrollTo(0, 0);
-  });
-  
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 0);
-  });
-  
-
-  // Сброс скролла при перезагрузке страницы
-window.addEventListener('beforeunload', () => {
-  window.scrollTo(0, 0);
-});
-
-// Сброс скролла при повороте экрана или изменении размеров окна
-window.addEventListener('orientationchange', () => {
-  window.scrollTo(0, 0);
-  location.reload();
-});
-
-
-let lastWindowWidth = window.innerWidth;
-
-window.addEventListener('resize', () => {
-  const currentWindowWidth = window.innerWidth;
-  
-  // Проверяем, изменилось ли значение ширины
-  if (currentWindowWidth !== lastWindowWidth) {
-    window.scrollTo(0, 0);
-    location.reload(); // Обновляем страницу только при изменении ширины
-  }
-  
-  // Обновляем значение ширины для будущих сравнений
-  lastWindowWidth = currentWindowWidth;
-});
-
-
-
+ 
 
 
 window.addEventListener('load', () => {

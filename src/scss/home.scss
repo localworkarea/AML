@@ -80,11 +80,8 @@
     @media (min-width:toEm(820.98)){
       width: toRem(350);
     }
-    @media (max-width: toEm(820.98)) and (min-width: $mobileSmall) {
-      width: toRem(300);
-    }
-    @media (max-width:$mobileSmall){
-       width: calc(50vw - 40px);
+    @media (max-width: toEm(820.98)){
+      width: calc(50vw - 40px);
     }
   }
   // .hero__content

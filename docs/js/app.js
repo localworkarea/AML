@@ -4164,6 +4164,28 @@
     const da = new DynamicAdapt("max");
     da.init();
     gsap.registerPlugin(ScrollTrigger);
+    window.addEventListener("pagehide", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("load", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("beforeunload", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("orientationchange", (() => {
+        window.scrollTo(0, 0);
+        location.reload();
+    }));
+    let lastWindowWidth = window.innerWidth;
+    window.addEventListener("resize", (() => {
+        const currentWindowWidth = window.innerWidth;
+        if (currentWindowWidth !== lastWindowWidth) {
+            window.scrollTo(0, 0);
+            location.reload();
+        }
+        lastWindowWidth = currentWindowWidth;
+    }));
     window.addEventListener("load", (function() {
         const header = document.querySelector(".header");
         const headerIconMenu = document.querySelector(".icon-menu");
@@ -4505,7 +4527,6 @@
                         }
                     });
                 }
-                if (isMobile) ;
             }));
         }), 200);
         const mediaQuery = window.matchMedia("(max-width: 43.811em)");
@@ -4587,30 +4608,6 @@
                 });
             }
         }
-    }));
-    window.addEventListener("unload", (() => {
-        window.scrollTo(0, 0);
-    }));
-    window.addEventListener("load", (() => {
-        setTimeout((() => {
-            window.scrollTo(0, 0);
-        }), 0);
-    }));
-    window.addEventListener("beforeunload", (() => {
-        window.scrollTo(0, 0);
-    }));
-    window.addEventListener("orientationchange", (() => {
-        window.scrollTo(0, 0);
-        location.reload();
-    }));
-    let lastWindowWidth = window.innerWidth;
-    window.addEventListener("resize", (() => {
-        const currentWindowWidth = window.innerWidth;
-        if (currentWindowWidth !== lastWindowWidth) {
-            window.scrollTo(0, 0);
-            location.reload();
-        }
-        lastWindowWidth = currentWindowWidth;
     }));
     window.addEventListener("load", (() => {
         const mediaQuery = window.matchMedia("(min-width: 43.811em)");
