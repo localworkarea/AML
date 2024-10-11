@@ -335,12 +335,6 @@ body * {
 .logo-ac {
   opacity: 0
 }
-.logo-ac__img {
-  height: auto;
-  width: 100%;
-  -webkit-filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
-  filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%)
-}
 .menu {
   display: flex;
   align-items: center;
