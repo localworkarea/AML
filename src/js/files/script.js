@@ -15,25 +15,25 @@ gsap.registerPlugin(ScrollTrigger);
 // })
 // gsap.ticker.lagSmoothing(0)
 
-const header = document.querySelector('.header');
-const headerIconMenu = document.querySelector('.icon-menu');
-const lockPaddingElements = document.querySelectorAll("[data-lp]")
-const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
-lockPaddingElements.forEach(lockPaddingElement => {
-  lockPaddingElement.style.paddingRight = lockPaddingValue
-});
-
-document.body.style.paddingRight = lockPaddingValue
-document.documentElement.classList.add("lock")
-if (header) {
-  headerIconMenu.style.pointerEvents = "none";
-  header.style.paddingRight = lockPaddingValue;
-}
-if (document.body.getAttribute('data-smooth-scroll') === 'true') {
-  document.body.setAttribute('data-smooth-scroll', 'false');
-}
 
 window.addEventListener('load', function() {
+  const header = document.querySelector('.header');
+  const headerIconMenu = document.querySelector('.icon-menu');
+  const lockPaddingElements = document.querySelectorAll("[data-lp]")
+  const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
+  lockPaddingElements.forEach(lockPaddingElement => {
+    lockPaddingElement.style.paddingRight = lockPaddingValue
+  });
+  
+  document.body.style.paddingRight = lockPaddingValue
+  document.documentElement.classList.add("lock")
+  if (header) {
+    headerIconMenu.style.pointerEvents = "none";
+    header.style.paddingRight = lockPaddingValue;
+  }
+  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+    document.body.setAttribute('data-smooth-scroll', 'false');
+  }
   setTimeout(function() {
     if (document.documentElement.classList.contains('lock')) {
         lockPaddingElements.forEach(lockPaddingElement => {
@@ -453,14 +453,14 @@ document.addEventListener("DOMContentLoaded", function() {
           top: "50%",
           duration: 3
         });
-        tl.to(focusEl, {
-          top: "50%",
-          duration: 3,
-        },"<0.5");
         // tl.to(focusEl, {
         //   top: "50%",
         //   duration: 3,
-        // });
+        // },"<0.5");
+        tl.to(focusEl, {
+          top: "50%",
+          duration: 3,
+        });
         tl.to(focusEl, {
           width: "100%",
           height: "100%",
@@ -476,8 +476,6 @@ document.addEventListener("DOMContentLoaded", function() {
           pin: focusSection,
         });
       }
-
-
 
 
         let breakPoint = 43.811; // 700.98px
