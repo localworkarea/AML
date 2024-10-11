@@ -3,7 +3,6 @@ import { isMobile } from "./functions.js";
 // Підключення списку активних модулів
 import { flsModules } from "./modules.js";
 
-gsap.registerPlugin(ScrollTrigger);
 
 // const lenis = new Lenis()
 // lenis.on('scroll', (e) => {
@@ -11,68 +10,74 @@ gsap.registerPlugin(ScrollTrigger);
 // })
 // lenis.on('scroll', ScrollTrigger.update)
 // gsap.ticker.add((time)=>{
-//   lenis.raf(time * 1000)
-// })
-// gsap.ticker.lagSmoothing(0)
+  //   lenis.raf(time * 1000)
+  // })
+  // gsap.ticker.lagSmoothing(0)
+  
+  
+  
+  
+  if (!document.documentElement.classList.contains('loading')) {
+    window.addEventListener("load", function () {
+      setTimeout(function () {
+        document.documentElement.classList.add('loaded');
+      }, 0);
+    });
+  }
+  
 
 
-
-
-
-
-
-
-const header = document.querySelector('.header');
-const headerIconMenu = document.querySelector('.icon-menu');
-const lockPaddingElements = document.querySelectorAll("[data-lp]")
-const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
-lockPaddingElements.forEach(lockPaddingElement => {
-  lockPaddingElement.style.paddingRight = lockPaddingValue
-});
-
-document.body.style.paddingRight = lockPaddingValue
-document.documentElement.classList.add("lock")
-if (header) {
-  headerIconMenu.style.pointerEvents = "none";
-  header.style.paddingRight = lockPaddingValue;
-}
-if (document.body.getAttribute('data-smooth-scroll') === 'true') {
-  document.body.setAttribute('data-smooth-scroll', 'false');
-}
-
-window.addEventListener('load', function() {
-
-
-  setTimeout(function() {
-    if (document.documentElement.classList.contains('lock')) {
+  const header = document.querySelector('.header');
+  const headerIconMenu = document.querySelector('.icon-menu');
+  const lockPaddingElements = document.querySelectorAll("[data-lp]")
+  const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
+  lockPaddingElements.forEach(lockPaddingElement => {
+    lockPaddingElement.style.paddingRight = lockPaddingValue
+  });
+  
+  document.body.style.paddingRight = lockPaddingValue
+  document.documentElement.classList.add("lock")
+  if (header) {
+    headerIconMenu.style.pointerEvents = "none";
+    header.style.paddingRight = lockPaddingValue;
+  }
+  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+    document.body.setAttribute('data-smooth-scroll', 'false');
+  }
+  
+  window.addEventListener('load', function() {
+    
+    setTimeout(function() {
+      if (document.documentElement.classList.contains('lock')) {
         lockPaddingElements.forEach(lockPaddingElement => {
           lockPaddingElement.style.paddingRight = ''
         });
         document.body.style.paddingRight = ''
         document.documentElement.classList.remove("lock")
         const header = document.querySelector('.header');
-          if (header) {
-            headerIconMenu.style.pointerEvents = "all";
-            header.style.paddingRight = '';
-          }
-  
-    }
-  
-    if (document.body.getAttribute('data-smooth-scroll') === 'false') {
-      document.body.setAttribute('data-smooth-scroll', 'true');
-    }
-  }, 1500);
+        if (header) {
+          headerIconMenu.style.pointerEvents = "all";
+          header.style.paddingRight = '';
+        }
+        
+      }
+      
+      if (document.body.getAttribute('data-smooth-scroll') === 'false') {
+        document.body.setAttribute('data-smooth-scroll', 'true');
+      }
+    }, 1500);
 
-
-
-
+    
+    gsap.registerPlugin(ScrollTrigger);
+    
+    
     // 1. ПЛАВНАЯ ПРОКРУТКА СТРАНИЦЫ =========================
     function smoothScroll(smoothness = 0.08, inertia = 0.85) {
       let scrollPosition = window.pageYOffset;
       let targetPosition = scrollPosition;
       let isScrolling = false;
       let isDraggingScrollbar = false;
-    
+      
       function updateScroll() {
           scrollPosition += (targetPosition - scrollPosition) * smoothness;
           window.scrollTo(0, scrollPosition);
@@ -337,39 +342,6 @@ window.addEventListener('load', function() {
      });
    }
    
-   // if (focusSection) {
-   //   const tl = gsap.timeline({
-   //     scrollTrigger: {
-   //       trigger: focusSection,
-   //       start: "top center", 
-   //       end: "bottom top",
-   //       scrub: 1, 
-   //       anticipatePin: 1,
-   //     }
-   //   });
-   //   tl.to(focusSubTitle, {
-   //     top: "50%",
-   //     duration: 3
-   //   });
-   //   tl.to(focusEl, {
-   //     top: "50%",
-   //     duration: 3,
-   //   });
-   //   tl.to(focusEl, {
-   //     width: "100%",
-   //     height: "100%",
-   //     top: "50%",
-   //     duration: 3,
-   //   });
-   //   ScrollTrigger.create({
-   //     trigger: focusSection,
-   //     start: "top top",
-   //     // end: "+=1200",
-   //     endTriger: focusSection,
-   //     scrub: true,
-   //     pin: focusSection,
-   //   });
-   // }
 
 
      let breakPoint = 43.811; // 700.98px
@@ -677,6 +649,8 @@ document.addEventListener("DOMContentLoaded", function() {
      resizeObserver.observe(document.body);
   
      // =======================================================================
+
+
 
     // -------------------------------------
   }); // end DOMContentLoaded ---------------------------------------------------------------

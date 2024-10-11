@@ -14,13 +14,6 @@
             document.documentElement.classList.add(className);
         }));
     }
-    function addLoadedClass() {
-        if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", (function() {
-            setTimeout((function() {
-                document.documentElement.classList.add("loaded");
-            }), 0);
-        }));
-    }
     function getHash() {
         if (location.hash) return location.hash.replace("#", "");
     }
@@ -4163,7 +4156,11 @@
     }
     const da = new DynamicAdapt("max");
     da.init();
-    gsap.registerPlugin(ScrollTrigger);
+    if (!document.documentElement.classList.contains("loading")) window.addEventListener("load", (function() {
+        setTimeout((function() {
+            document.documentElement.classList.add("loaded");
+        }), 0);
+    }));
     const header = document.querySelector(".header");
     const headerIconMenu = document.querySelector(".icon-menu");
     const lockPaddingElements = document.querySelectorAll("[data-lp]");
@@ -4194,6 +4191,7 @@
             }
             if (document.body.getAttribute("data-smooth-scroll") === "false") document.body.setAttribute("data-smooth-scroll", "true");
         }), 1500);
+        gsap.registerPlugin(ScrollTrigger);
         function smoothScroll(smoothness = .08, inertia = .85) {
             let scrollPosition = window.pageYOffset;
             let targetPosition = scrollPosition;
@@ -4632,7 +4630,6 @@
     }));
     window["FLS"] = false;
     isWebp();
-    addLoadedClass();
     menuInit();
     formSubmit();
     pageNavigation();

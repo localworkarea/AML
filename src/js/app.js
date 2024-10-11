@@ -34,7 +34,7 @@ flsFunctions.isWebp();
 /* Додавання класу touch для HTML якщо браузер мобільний */
 // flsFunctions.addTouchClass();
 /* Додавання loaded для HTML після повного завантаження сторінки */
-flsFunctions.addLoadedClass();
+// flsFunctions.addLoadedClass();
 /* Модуль для роботи з меню (Бургер) */
 flsFunctions.menuInit();
 /* Форматування чисел */
