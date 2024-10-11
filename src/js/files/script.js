@@ -15,26 +15,26 @@ gsap.registerPlugin(ScrollTrigger);
 // })
 // gsap.ticker.lagSmoothing(0)
 
-window.addEventListener('load', function() {
-  const header = document.querySelector('.header');
-  const headerIconMenu = document.querySelector('.icon-menu');
-  const lockPaddingElements = document.querySelectorAll("[data-lp]")
-  const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
-  lockPaddingElements.forEach(lockPaddingElement => {
-    lockPaddingElement.style.paddingRight = lockPaddingValue
-  });
+const header = document.querySelector('.header');
+const headerIconMenu = document.querySelector('.icon-menu');
+const lockPaddingElements = document.querySelectorAll("[data-lp]")
+const lockPaddingValue = window.innerWidth - document.body.offsetWidth + 'px'
+lockPaddingElements.forEach(lockPaddingElement => {
+  lockPaddingElement.style.paddingRight = lockPaddingValue
+});
 
-  document.body.style.paddingRight = lockPaddingValue
-  document.documentElement.classList.add("lock")
-	if (header) {
-    headerIconMenu.style.pointerEvents = "none";
-		header.style.paddingRight = lockPaddingValue;
-	}
-  if (document.body.getAttribute('data-smooth-scroll') === 'true') {
-    document.body.setAttribute('data-smooth-scroll', 'false');
-  }
+document.body.style.paddingRight = lockPaddingValue
+document.documentElement.classList.add("lock")
+if (header) {
+  headerIconMenu.style.pointerEvents = "none";
+  header.style.paddingRight = lockPaddingValue;
+}
+if (document.body.getAttribute('data-smooth-scroll') === 'true') {
+  document.body.setAttribute('data-smooth-scroll', 'false');
+}
+
+window.addEventListener('load', function() {
   setTimeout(function() {
-    
     if (document.documentElement.classList.contains('lock')) {
         lockPaddingElements.forEach(lockPaddingElement => {
           lockPaddingElement.style.paddingRight = ''
