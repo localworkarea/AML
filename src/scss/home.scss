@@ -63,8 +63,10 @@
 
     position: fixed;
     z-index: 9;
-    // transform: translate(-50%,-50%);
-
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    opacity: 0;
     &._anim-end {
       z-index: 11;
     }
@@ -76,14 +78,6 @@
     }
 
     @media (min-width:toEm(820.98)){
-      // top: 50%;
-      // left: 75%;
-    }
-    @media (max-width: toEm(820.98)){
-      top: 30%;
-      left: 50%;
-    }
-    @media (min-width:toEm(820.98)){
       width: toRem(350);
     }
     @media (max-width: toEm(820.98)) and (min-width: $mobileSmall) {
@@ -92,9 +86,6 @@
     @media (max-width:$mobileSmall){
        width: calc(50vw - 40px);
     }
-
-  
-    
   }
   // .hero__content
   &__content {
@@ -138,11 +129,11 @@
             @include adaptiveValue("width", 115,70,0,1440,390);
           }
           .loaded & {
-            transition: transform .85s cubic-bezier(.22,.89,.34,.96), opacity .35s ease;
-            @media (min-width:$mobileSmall){
-              transition-delay: .5s;
+            transition: transform .85s ease, opacity .35s ease;
+            @media (min-width: toEm(980.98)){
+              transition-delay: .65s;
             }
-            @media (max-width:$mobileSmall){
+            @media (max-width:toEm(980.98)){
               transition-delay: .8s;
             }
           }
@@ -152,11 +143,11 @@
        .sub-line {
           transform: translate(50%, 0);
           .loaded & {
-            @media (min-width:$mobileSmall){
+            @media (min-width:toEm(980.98)){
               transition: transform 1s ease, opacity .35s ease;
-              transition-delay: 1s;
+              transition-delay: 1.3s;
             }
-            @media (max-width:$mobileSmall){
+            @media (max-width:toEm(980.98)){
               transition: transform .85s ease, opacity .35s ease;
               transition-delay: 1.2s;
             }
@@ -169,11 +160,11 @@
         .sub-line {
           transform: translate(50%, 0);
           .loaded & {
-            @media (min-width:$mobileSmall){
+            @media (min-width:toEm(980.98)){
               transition: transform 1s ease, opacity .65s ease;
-              transition-delay: 1.2s;
+              transition-delay: 1.5s;
             }
-            @media (max-width:$mobileSmall){
+            @media (max-width:toEm(980.98)){
               transition: transform .85s ease, opacity .65s ease;
               transition-delay: 1.4s;
             }
@@ -206,10 +197,10 @@
     .loaded & {
       transform: scale(1);
       opacity: 1;
-      @media (min-width:$mobileSmall){
-         transition-delay: 1.5s; 
+      @media (min-width:toEm(980.98)){
+         transition-delay: 1.8s; 
       }
-      @media (max-width:$mobileSmall){
+      @media (max-width:toEm(980.98)){
           transition-delay: 1.5s;
       }
     }

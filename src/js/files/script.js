@@ -284,7 +284,6 @@ document.addEventListener("DOMContentLoaded", function() {
           transform: "translate(-50%, -50%)"
         });
 
-
         let breakPoint = 51.311; // 820.98px
         let mm2 = gsap.matchMedia();
   
