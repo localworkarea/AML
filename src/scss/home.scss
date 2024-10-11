@@ -40,9 +40,6 @@
     @media (min-width:$tablet){
       grid-template-columns: 55% auto;
     }
-    // @media (min-width:toEm(820.98)){
-    //   column-gap: toRem(45);
-    // }
     @media (max-width:$tablet) and (min-width: toEm(820.98)){
       grid-template-columns: 65% auto;
     }
@@ -52,17 +49,22 @@
   }
   // .hero__rider
   &__rider {
+
     @media (min-width:toEm(820.98)){
       order: 2;
     }
+
   }
   // .hero__img
   &__img {
+    height: auto;
+    width: 100%;
+    filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+
     position: fixed;
     z-index: 9;
-    height: auto;
-    transform: translate(-50%,0);
-    filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
+    // transform: translate(-50%,-50%);
+
     &._anim-end {
       z-index: 11;
     }
@@ -72,34 +74,27 @@
     .menu-open & {
       filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
     }
-    @media (min-width:toEm(1500.98)){
-      top: 38%;
-      left: 70%;
-    }
-    @media (max-width: toEm(1500.98)) and (min-width: toEm(820.98)){
-      top: 30%;
-      left: 75%;
-    }
-    // @media (max-width: toEm(1100.98)) and (min-width: toEm(820.98)){
-    //   top: 30%;
-    //   left: 50%;
-    // }
-    @media (min-width:toEm(1100.98)){
-        width: toRem(432);
-    }
-    @media (max-width: toEm(1100.98)) and (min-width: $mobileSmall) {
-         width: toRem(370);
+
+    @media (min-width:toEm(820.98)){
+      // top: 50%;
+      // left: 75%;
     }
     @media (max-width: toEm(820.98)){
-      top: 20%;
+      top: 30%;
       left: 50%;
     }
-    // @media (min-width:$mobileSmall){
-    //   width: 432px;
-    // }
-    @media (max-width:$mobileSmall){
-       width: calc(100vw - 40px);
+    @media (min-width:toEm(820.98)){
+      width: toRem(350);
     }
+    @media (max-width: toEm(820.98)) and (min-width: $mobileSmall) {
+      width: toRem(300);
+    }
+    @media (max-width:$mobileSmall){
+       width: calc(50vw - 40px);
+    }
+
+  
+    
   }
   // .hero__content
   &__content {
@@ -110,75 +105,89 @@
     @media (max-width: toEm(820.98)) and (min-width: toEm(600.98)) {
         max-width: 70%;
     }
+    @media (max-width: toEm(600.98)) and (min-width: toEm(360.98)) {
+        max-width: 87%;
+        padding-left: toRem(10);
+    }
   }
   // .hero__title
   &__title {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    @include adaptiveValue("font-size", 110, 62,0,1440,375);
+    line-height: 1;
+    @include adaptiveValue("font-size", 110, 50,0,1440,375);
     span {
       display: inline-block;
     }
-    @media (min-width:$mobileSmall){
-      padding-top: 6px;
-      line-height: 1;
-    }
     .lines {
+      overflow: hidden;
       position: relative;
-      &:nth-child(1),
+      width: fit-content;
+      &:nth-child(1) {
+        .sub-line {
+          transform: translate(100%, 0);
+          @include adaptiveValue("padding-right", 142, 97,0,1440,390);
+          &:before {
+            content: "";
+            position: absolute;
+            top: 38%;
+            right: 0;
+            background-color: #919268;
+            height: toRem(1.5);
+            @include adaptiveValue("width", 115,70,0,1440,390);
+          }
+          .loaded & {
+            transition: transform .85s cubic-bezier(.22,.89,.34,.96), opacity .35s ease;
+            @media (min-width:$mobileSmall){
+              transition-delay: .5s;
+            }
+            @media (max-width:$mobileSmall){
+              transition-delay: .8s;
+            }
+          }
+        }
+      }
       &:nth-child(2) {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        span {
-          &:nth-child(2) {
-            position: relative;
-            z-index: 5;
-            &::before {
-              content:'';
-              position: absolute;
-              top: toRem(-6);
-              left: 0;
-              width: 100%;
-              height: calc(100% + 6px);
-              background-color: $dark;
+       .sub-line {
+          transform: translate(50%, 0);
+          .loaded & {
+            @media (min-width:$mobileSmall){
+              transition: transform 1s ease, opacity .35s ease;
+              transition-delay: 1s;
+            }
+            @media (max-width:$mobileSmall){
+              transition: transform .85s ease, opacity .35s ease;
+              transition-delay: 1.2s;
             }
           }
         }
       }
       &:nth-child(3) {
-        line-height: 1.1;
-        text-align: end;
-      }
-      .sub-line {
-        transition: transform .85s cubic-bezier(.22,.89,.34,.96), opacity .45s ease;
-        opacity: 0;
-        
-        &.first {
-          position: relative;
-          transform: translate(100%, 0);
-          @include adaptiveValue("padding-right", 142, 97,0,1440,390);
-          &::after {
-            content:'';
-            position: absolute;
-            top: 38%;
-            right: 0;
-            background-color: $mainColor;
-            height: toRem(1.5);
-            @include adaptiveValue("width", 115, 70,0,1440,480);
+        color: $lihtgGreen;
+        align-self: flex-end;
+        .sub-line {
+          transform: translate(50%, 0);
+          .loaded & {
+            @media (min-width:$mobileSmall){
+              transition: transform 1s ease, opacity .65s ease;
+              transition-delay: 1.2s;
+            }
+            @media (max-width:$mobileSmall){
+              transition: transform .85s ease, opacity .65s ease;
+              transition-delay: 1.4s;
+            }
           }
         }
-        &.second {
-          transform: translate(50%, 0);
-        }
-        &.third {
-          position: relative;
-          color: $lihtgGreen;
-          transform: translate(50%, 0);
-        }
+      }
+      .sub-line {
+        padding-top: toRem(8);
+        padding-bottom: toRem(6);
+        opacity: 0;
         .loaded & {
           opacity: 1;
           transform: translate(0%, 0);
+          
         }
       }
     }
@@ -190,19 +199,37 @@
     display: grid;
     aspect-ratio: 1/1;
     height: auto;
-    @include adaptiveValue("width", 79, 50,0,1440,390);
+    transform: scale(0.2);
+    opacity: 0;
+    transition: transform .65s ease, opacity .45s ease;
+    @include adaptiveValue("width", 79, 45,0,1440,390);
+    .loaded & {
+      transform: scale(1);
+      opacity: 1;
+      @media (min-width:$mobileSmall){
+         transition-delay: 1.5s; 
+      }
+      @media (max-width:$mobileSmall){
+          transition-delay: 1.5s;
+      }
+    }
     img {
       width: 100%;
       height: auto;
+    }
+    @media (max-width: toEm(600.98)) and (min-width: toEm(360.98)) {
+      left: toRem(10);
     }
     @media (min-width:$mobileSmall){
       bottom: toRem(20);
     }
     @media (max-width:$mobileSmall){
-      bottom: toRem(10);        
+      bottom: toRem(5);        
     }
   }
 }
+
+
 
 %flexContainer {
   min-height: 100%;
@@ -1108,28 +1135,25 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+%footerOpacity {
+  opacity: 0;
+  transition: opacity .55s ease;
+}
 .footer {
   overflow: hidden;
   @extend %fontFamily;
   &._watcher-view {
     .footer__logo,
     .social__link,
-    .pages__item {
-      opacity: 1;
-    }
+    .pages__item,
     .footer__link {
-      transform: translate(0,0);
+      opacity: 1;
     }
     .footer__nav {
       border-color:  rgb(145, 146, 104, 1);
       transition-delay: 0.22s;
     }
-    // .social__link {
-    //   opacity: 1;
-    // }
-    // .pages__item {
-    //   opacity: 1;
-    // }
     .pages__copy {
       opacity: .5;
     }
@@ -1150,8 +1174,7 @@
   &__logo {
     filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
     height: auto;
-    opacity: 0;
-    transition: opacity .65s ease;
+    @extend %footerOpacity;
     @media (min-width:$mobileSmall){
        width: toRem(68); 
     }
@@ -1166,7 +1189,7 @@
   // .footer__nav
   &__nav {
     border-bottom: toRem(1) solid rgb(145, 146, 104, 0);
-    transition: border .45s ease;
+    transition: border .55s ease;
     @media (min-width:toEm(700.98)){
       grid-column: 2/3;
     }
@@ -1195,43 +1218,43 @@
     }
     &:nth-child(1) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.1s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.1s;
       }
     }
     &:nth-child(2) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.13s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.13s;
       }
     }
     &:nth-child(3) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.16s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.16s;
       }
     }
     &:nth-child(4) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.19s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.19s;
       }
     }
     &:nth-child(5) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.22s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.22s;
       }
     }
     &:nth-child(6) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.25s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.25s;
       }
     }
     &:nth-child(7) {
       .footer__link {
-        transition: background-color .3s ease 0s, color .3s ease 0s, transform .55s ease 0.28s;
+        transition: background-color .3s ease 0s, color .3s ease 0s, opacity .55s ease 0.28s;
       }
     }
   }
   // .footer__link
   &__link {
-    transform: translate(0,100%);
+    opacity: 0;
     @media (min-width:$mobileSmall){
        font-size: toRem(15); 
     }
@@ -1327,8 +1350,7 @@
     overflow: hidden;
     position: relative;
 
-    opacity: 0;
-    transition: opacity .65s ease;
+    @extend %footerOpacity;
     img {
       width: 100%;
       height: auto;
@@ -1386,8 +1408,8 @@
   }
   // .pages__item
   &__item {
-    opacity: 0;
-    transition: opacity .65s ease;
+    @extend %footerOpacity;
+
     &:nth-child(1) {
       transition-delay: 0.37s;
     }

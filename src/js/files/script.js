@@ -224,11 +224,122 @@ document.addEventListener("DOMContentLoaded", function() {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         ScrollTrigger.refresh();
 
-        if (heroImg) {
+      //   if (heroImg) {
+      //     const scrollPosY = window.pageYOffset;
+      //     window.scrollTo(0, 0);
+    
+      //     function getOffset(el) {
+      //       const rect = el.getBoundingClientRect();
+      //       return {
+      //         top: rect.top + window.pageYOffset,
+      //         left: rect.left + window.pageXOffset,
+      //         width: rect.width,
+      //         height: rect.height
+      //       };
+      //     }
+    
+      //     const logoAcPosition = getOffset(logoAc);
+      //     window.scrollTo(0, scrollPosY);
+    
+      //     gsap.to(heroImg, {
+      //       scrollTrigger: {
+      //         trigger: heroSection,
+      //         start: "top top",
+      //         end: "80% center",
+      //         scrub: 1,
+      //         onEnter: () => {
+      //           // Удаляем класс при начале анимации
+      //           heroImg.classList.remove('_anim-end');
+      //           logoAc.classList.remove('_anim-end');
+      //         },
+      //         onUpdate: (self) => {
+      //           // Убираем класс, когда движение идет в обратном направлении
+      //           if (self.direction < 0) {
+      //             heroImg.classList.remove('_anim-end');
+      //             logoAc.classList.remove('_anim-end');
+      //           }
+      //         },
+      //         onLeave: () => {
+      //           // Добавляем класс, когда скроллим до конца секции
+      //           heroImg.classList.add('_anim-end');
+      //           logoAc.classList.add('_anim-end');
+      //         }
+      //       },
+      //       width: logoAcPosition.width,
+      //       left: logoAcPosition.left + logoAcPosition.width / 2,
+      //       top: logoAcPosition.top + logoAcPosition.height / 2,
+      //       ease: "none",
+      //     });
+      // }
+
+
+      if (heroImg) {
+
+        // 1. устанавливаем начальные значения
+        gsap.set(heroImg, {
+          top: "50%",
+          left: "50%",
+          scale: 0.5,
+          opacity: 0,
+          transform: "translate(-50%, -50%)"
+        });
+
+
+        let breakPoint = 51.311; // 820.98px
+        let mm2 = gsap.matchMedia();
+  
+        mm2.add({
+          isDesktop: `(min-width: ${breakPoint}em)`,
+          isMobile: `(max-width: ${breakPoint}em)`
+        }, (context) => {
+        
+          let {isDesktop, isMobile} = context.conditions;
+        
+          if (isDesktop) {
+               // 2. Начальная анимация после загрузки страницы
+              gsap.timeline()
+              .to(heroImg, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                ease: "power2.out"
+              })
+              .to(heroImg, {
+                left: "75%",
+                duration: 0.85,
+                ease: "power2.out",
+                onComplete: function() {
+                  // 3. продолжаем после завершения первой анимации
+                  startScrollAnimation(); 
+                }
+              });
+          }
+          if (isMobile) {
+             // 2. Начальная анимация после загрузки страницы
+             gsap.timeline()
+             .to(heroImg, {
+               opacity: 1,
+               scale: 1,
+               duration: 0.5,
+               ease: "power2.out"
+             })
+             .to(heroImg, {
+               top: "30%",
+               duration: 0.5,
+               ease: "power2.out",
+               onComplete: function() {
+                 // 3. продолжаем после завершения первой анимации
+                 startScrollAnimation(); 
+               }
+             });
+          }
+        });
+
+        
+        function startScrollAnimation() {
           const scrollPosY = window.pageYOffset;
-    
           window.scrollTo(0, 0);
-    
+        
           function getOffset(el) {
             const rect = el.getBoundingClientRect();
             return {
@@ -238,42 +349,43 @@ document.addEventListener("DOMContentLoaded", function() {
               height: rect.height
             };
           }
-    
+        
           const logoAcPosition = getOffset(logoAc);
-    
           window.scrollTo(0, scrollPosY);
-    
+        
           gsap.to(heroImg, {
             scrollTrigger: {
               trigger: heroSection,
               start: "top top",
-              end: "80% center",
+              end: "70% center",
               scrub: 1,
               onEnter: () => {
-                // Удаляем класс при начале анимации
                 heroImg.classList.remove('_anim-end');
                 logoAc.classList.remove('_anim-end');
               },
               onUpdate: (self) => {
-                // Убираем класс, когда движение идет в обратном направлении
                 if (self.direction < 0) {
                   heroImg.classList.remove('_anim-end');
                   logoAc.classList.remove('_anim-end');
                 }
               },
               onLeave: () => {
-                // Добавляем класс, когда скроллим до конца секции
                 heroImg.classList.add('_anim-end');
                 logoAc.classList.add('_anim-end');
               }
             },
             width: logoAcPosition.width,
-            // left: logoAcPosition.left,
             left: logoAcPosition.left + logoAcPosition.width / 2,
-            top: logoAcPosition.top,
+            top: logoAcPosition.top + logoAcPosition.height / 2,
             ease: "none",
           });
+        }
       }
+      
+
+
+
+
 
       if (whoSection) {
         gsap.to(headerEl, {
@@ -304,14 +416,14 @@ document.addEventListener("DOMContentLoaded", function() {
           top: "50%",
           duration: 3
         });
-        // tl.to(focusEl, {
-        //   top: "50%",
-        //   duration: 3,
-        // },"<0.5");
         tl.to(focusEl, {
           top: "50%",
           duration: 3,
-        });
+        },"<0.5");
+        // tl.to(focusEl, {
+        //   top: "50%",
+        //   duration: 3,
+        // });
         tl.to(focusEl, {
           width: "100%",
           height: "100%",
@@ -398,9 +510,6 @@ document.addEventListener("DOMContentLoaded", function() {
           }
         });
       
-       
-      
-    
     }, 200);
 
   
@@ -548,6 +657,17 @@ document.addEventListener("DOMContentLoaded", function() {
   }); // end DOMContentLoaded ---------------------------------------------------------------
   // ------------------------------
 
+
+  window.addEventListener('unload', () => {
+    window.scrollTo(0, 0);
+  });
+  
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  });
+  
 
   // Сброс скролла при перезагрузке страницы
 window.addEventListener('beforeunload', () => {
