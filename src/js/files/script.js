@@ -256,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
      const whoSection = document.querySelector('.who');
 
      const focusSection = document.querySelector('.focus');
+     const focusContainer = document.querySelector('.focus__container');
      const focusSubTitle = document.querySelector('.focus__subtitle');
      const focusEl = document.querySelector('.focus__el');
 
@@ -391,42 +392,73 @@ document.addEventListener("DOMContentLoaded", function() {
       }
 
       if (focusSection) {
+        ScrollTrigger.create({
+          trigger: focusSection,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+          pin: true,
+          // markers: true,
+        });
+      
         const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: focusSection,
+            trigger: focusContainer,
             start: "top center", 
             end: "bottom top",
             scrub: 1, 
-            anticipatePin: 1,
           }
         });
+      
         tl.to(focusSubTitle, {
-          top: "50%",
-          duration: 3
-        });
-        // tl.to(focusEl, {
-        //   top: "50%",
-        //   duration: 3,
-        // },"<0.5");
-        tl.to(focusEl, {
           top: "50%",
           duration: 3,
         });
+        tl.to(focusEl, {
+          top: "50%",
+          duration: 3,
+        }, "-=1");
         tl.to(focusEl, {
           width: "100%",
           height: "100%",
           top: "50%",
           duration: 3,
         });
-        ScrollTrigger.create({
-          trigger: focusSection,
-          start: "top top",
-          // end: "+=1200",
-          endTriger: focusSection,
-          scrub: true,
-          pin: focusSection,
-        });
       }
+      
+      // if (focusSection) {
+      //   const tl = gsap.timeline({
+      //     scrollTrigger: {
+      //       trigger: focusSection,
+      //       start: "top center", 
+      //       end: "bottom top",
+      //       scrub: 1, 
+      //       anticipatePin: 1,
+      //     }
+      //   });
+      //   tl.to(focusSubTitle, {
+      //     top: "50%",
+      //     duration: 3
+      //   });
+      //   tl.to(focusEl, {
+      //     top: "50%",
+      //     duration: 3,
+      //   });
+      //   tl.to(focusEl, {
+      //     width: "100%",
+      //     height: "100%",
+      //     top: "50%",
+      //     duration: 3,
+      //   });
+      //   ScrollTrigger.create({
+      //     trigger: focusSection,
+      //     start: "top top",
+      //     // end: "+=1200",
+      //     endTriger: focusSection,
+      //     scrub: true,
+      //     pin: focusSection,
+      //   });
+      // }
 
 
         let breakPoint = 43.811; // 700.98px
@@ -494,7 +526,7 @@ document.addEventListener("DOMContentLoaded", function() {
           }
         });
       
-    }, 200);
+    }, 500);
 
   
    
@@ -680,10 +712,6 @@ window.addEventListener('pagehide', () => {
   window.scrollTo(0, 0);
 });
 
-// window.addEventListener('unload', () => {
-//   window.scrollTo(0, 0);
-// });
-
 window.addEventListener('load', () => {
     window.scrollTo(0, 0);
 });
@@ -715,4 +743,76 @@ if (currentWindowWidth !== lastWindowWidth) {
 // Обновляем значение ширины для будущих сравнений
 lastWindowWidth = currentWindowWidth;
 });
+
+
+
+
+
+
+
+
+// function stopOverscroll(element) {
+//   element = gsap.utils.toArray(element)[0] || window;
+//   (element === document.body || element === document.documentElement) && (element = window);
+//     let lastScroll = 0,
+//     lastTouch,
+//     forcing,
+//     forward = true,
+//     isRoot = element === window,
+//     scroller = isRoot ? document.scrollingElement : element,
+//     ua = window.navigator.userAgent + "",
+//     getMax = isRoot
+//       ? () => scroller.scrollHeight - window.innerHeight
+//       : () => scroller.scrollHeight - scroller.clientHeight,
+//     addListener = (type, func) =>
+//       element.addEventListener(type, func, { passive: false }),
+//     revert = () => {
+//       scroller.style.overflowY = "auto";
+//       forcing = false;
+//     },
+//     kill = () => {
+//       forcing = true;
+//       scroller.style.overflowY = "hidden";
+//       !forward && scroller.scrollTop < 1
+//         ? (scroller.scrollTop = 1)
+//         : (scroller.scrollTop = getMax() - 1);
+//       setTimeout(revert, 1);
+//     },
+//     handleTouch = (e) => {
+//       let evt = e.changedTouches ? e.changedTouches[0] : e,
+//         forward = evt.pageY <= lastTouch;
+//       if (
+//         ((!forward && scroller.scrollTop <= 1) ||
+//           (forward && scroller.scrollTop >= getMax() - 1)) &&
+//         e.type === "touchmove"
+//       ) {
+//         e.preventDefault();
+//       } else {
+//         lastTouch = evt.pageY;
+//       }
+//     },
+//     handleScroll = (e) => {
+//       if (!forcing) {
+//         let scrollTop = scroller.scrollTop;
+//         forward = scrollTop > lastScroll;
+//         if (
+//           (!forward && scrollTop < 1) ||
+//           (forward && scrollTop >= getMax() - 1)
+//         ) {
+//           e.preventDefault();
+//           kill();
+//         }
+//         lastScroll = scrollTop;
+//       }
+//     };
+//   if ("ontouchend" in document && !!ua.match(/Version\/[\d\.]+.*Safari/)) {
+//     addListener("scroll", handleScroll);
+//     addListener("touchstart", handleTouch);
+//     addListener("touchmove", handleTouch);
+//   }
+//   scroller.style.overscrollBehavior = "none";
+// }
+
+// stopOverscroll();
+
 

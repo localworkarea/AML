@@ -4324,6 +4324,7 @@
         const headerEl = document.querySelector(".header");
         const whoSection = document.querySelector(".who");
         const focusSection = document.querySelector(".focus");
+        const focusContainer = document.querySelector(".focus__container");
         const focusSubTitle = document.querySelector(".focus__subtitle");
         const focusEl = document.querySelector(".focus__el");
         const footerSection = document.querySelector(".footer");
@@ -4428,13 +4429,19 @@
                 }
             });
             if (focusSection) {
+                ScrollTrigger.create({
+                    trigger: focusSection,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                    pin: true
+                });
                 const tl = gsap.timeline({
                     scrollTrigger: {
-                        trigger: focusSection,
+                        trigger: focusContainer,
                         start: "top center",
                         end: "bottom top",
-                        scrub: 1,
-                        anticipatePin: 1
+                        scrub: 1
                     }
                 });
                 tl.to(focusSubTitle, {
@@ -4444,19 +4451,12 @@
                 tl.to(focusEl, {
                     top: "50%",
                     duration: 3
-                });
+                }, "-=1");
                 tl.to(focusEl, {
                     width: "100%",
                     height: "100%",
                     top: "50%",
                     duration: 3
-                });
-                ScrollTrigger.create({
-                    trigger: focusSection,
-                    start: "top top",
-                    endTriger: focusSection,
-                    scrub: true,
-                    pin: focusSection
                 });
             }
             let breakPoint = 43.811;
@@ -4506,7 +4506,7 @@
                     });
                 }
             }));
-        }), 200);
+        }), 500);
         const mediaQuery = window.matchMedia("(max-width: 43.811em)");
         if (valuesItemsContainer && valuesItems) {
             let hoverTimeout;
