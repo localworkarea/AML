@@ -4164,28 +4164,6 @@
     const da = new DynamicAdapt("max");
     da.init();
     gsap.registerPlugin(ScrollTrigger);
-    window.addEventListener("pagehide", (() => {
-        window.scrollTo(0, 0);
-    }));
-    window.addEventListener("load", (() => {
-        window.scrollTo(0, 0);
-    }));
-    window.addEventListener("beforeunload", (() => {
-        window.scrollTo(0, 0);
-    }));
-    window.addEventListener("orientationchange", (() => {
-        window.scrollTo(0, 0);
-        location.reload();
-    }));
-    let lastWindowWidth = window.innerWidth;
-    window.addEventListener("resize", (() => {
-        const currentWindowWidth = window.innerWidth;
-        if (currentWindowWidth !== lastWindowWidth) {
-            window.scrollTo(0, 0);
-            location.reload();
-        }
-        lastWindowWidth = currentWindowWidth;
-    }));
     window.addEventListener("load", (function() {
         const header = document.querySelector(".header");
         const headerIconMenu = document.querySelector(".icon-menu");
@@ -4629,6 +4607,28 @@
         }
         setMaxHeight();
         mediaQuery.addEventListener("change", setMaxHeight);
+    }));
+    window.addEventListener("pagehide", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("load", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("beforeunload", (() => {
+        window.scrollTo(0, 0);
+    }));
+    window.addEventListener("orientationchange", (() => {
+        window.scrollTo(0, 0);
+        location.reload();
+    }));
+    let lastWindowWidth = window.innerWidth;
+    window.addEventListener("resize", (() => {
+        const currentWindowWidth = window.innerWidth;
+        if (currentWindowWidth !== lastWindowWidth) {
+            window.scrollTo(0, 0);
+            location.reload();
+        }
+        lastWindowWidth = currentWindowWidth;
     }));
     window["FLS"] = false;
     isWebp();

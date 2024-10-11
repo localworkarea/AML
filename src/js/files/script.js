@@ -17,46 +17,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 
-window.addEventListener('pagehide', () => {
-  window.scrollTo(0, 0);
-});
-
-// window.addEventListener('unload', () => {
-//   window.scrollTo(0, 0);
-// });
-
-window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
-});
-
-
-// Сброс скролла при перезагрузке страницы
-window.addEventListener('beforeunload', () => {
-window.scrollTo(0, 0);
-});
-
-// Сброс скролла при повороте экрана или изменении размеров окна
-window.addEventListener('orientationchange', () => {
-window.scrollTo(0, 0);
-location.reload();
-});
-
-
-let lastWindowWidth = window.innerWidth;
-
-window.addEventListener('resize', () => {
-const currentWindowWidth = window.innerWidth;
-
-// Проверяем, изменилось ли значение ширины
-if (currentWindowWidth !== lastWindowWidth) {
-  window.scrollTo(0, 0);
-  location.reload();
-}
-
-// Обновляем значение ширины для будущих сравнений
-lastWindowWidth = currentWindowWidth;
-});
-
 
 
 
@@ -713,3 +673,46 @@ window.addEventListener('load', () => {
   setMaxHeight();
   mediaQuery.addEventListener('change', setMaxHeight);
 });
+
+
+
+window.addEventListener('pagehide', () => {
+  window.scrollTo(0, 0);
+});
+
+// window.addEventListener('unload', () => {
+//   window.scrollTo(0, 0);
+// });
+
+window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+});
+
+
+// Сброс скролла при перезагрузке страницы
+window.addEventListener('beforeunload', () => {
+window.scrollTo(0, 0);
+});
+
+// Сброс скролла при повороте экрана или изменении размеров окна
+window.addEventListener('orientationchange', () => {
+window.scrollTo(0, 0);
+location.reload();
+});
+
+
+let lastWindowWidth = window.innerWidth;
+
+window.addEventListener('resize', () => {
+const currentWindowWidth = window.innerWidth;
+
+// Проверяем, изменилось ли значение ширины
+if (currentWindowWidth !== lastWindowWidth) {
+  window.scrollTo(0, 0);
+  location.reload();
+}
+
+// Обновляем значение ширины для будущих сравнений
+lastWindowWidth = currentWindowWidth;
+});
+
