@@ -4376,7 +4376,6 @@
                     end: "bottom top",
                     scrub: true,
                     pin: true,
-                    markers: true,
                     invalidateOnRefresh: true
                 });
                 const tl = gsap.timeline({

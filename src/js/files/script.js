@@ -314,7 +314,7 @@ import { flsModules } from "./modules.js";
        end: "bottom top",
        scrub: true,
        pin: true,
-       markers: true,
+      //  markers: true,
        invalidateOnRefresh: true,
      });
    
