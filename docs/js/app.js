@@ -4265,7 +4265,7 @@
         const headerEl = document.querySelector(".header");
         const whoSection = document.querySelector(".who");
         const focusSection = document.querySelector(".focus");
-        const focusContainer = document.querySelector(".focus__container");
+        document.querySelector(".focus__container");
         const focusSubTitle = document.querySelector(".focus__subtitle");
         const focusEl = document.querySelector(".focus__el");
         const footerSection = document.querySelector(".footer");
@@ -4375,19 +4375,23 @@
                     start: "top top",
                     end: "bottom top",
                     scrub: true,
-                    pin: true
+                    pin: true,
+                    markers: true,
+                    invalidateOnRefresh: true
                 });
                 const tl = gsap.timeline({
                     scrollTrigger: {
-                        trigger: focusContainer,
+                        trigger: focusSection,
                         start: "top center",
                         end: "bottom top",
-                        scrub: 1
+                        scrub: 1,
+                        invalidateOnRefresh: true
                     }
                 });
                 tl.to(focusSubTitle, {
                     top: "50%",
-                    duration: 3
+                    duration: 3,
+                    immediateRender: false
                 });
                 tl.to(focusEl, {
                     top: "50%",
@@ -4456,6 +4460,9 @@
                     const videoWidth = videoContainer.offsetWidth;
                     const videoHeight = videoWidth * (210 / 353);
                     videoContainer.style.height = `${videoHeight}px`;
+                    setTimeout((() => {
+                        ScrollTrigger.refresh();
+                    }), 500);
                 } else videoContainer.style.height = "";
             }
             function setActiveClass(index) {

@@ -314,21 +314,24 @@ import { flsModules } from "./modules.js";
        end: "bottom top",
        scrub: true,
        pin: true,
-       // markers: true,
+       markers: true,
+       invalidateOnRefresh: true,
      });
    
      const tl = gsap.timeline({
        scrollTrigger: {
-         trigger: focusContainer,
+         trigger: focusSection,
          start: "top center", 
          end: "bottom top",
          scrub: 1, 
+         invalidateOnRefresh: true,
        }
      });
    
      tl.to(focusSubTitle, {
        top: "50%",
        duration: 3,
+       immediateRender: false,
      });
      tl.to(focusEl, {
        top: "50%",
@@ -423,6 +426,10 @@ import { flsModules } from "./modules.js";
        const videoWidth = videoContainer.offsetWidth; 
        const videoHeight = videoWidth * (210 / 353); 
        videoContainer.style.height = `${videoHeight}px`;
+
+       setTimeout(() => {
+         ScrollTrigger.refresh();
+       }, 500);
      } else {
        videoContainer.style.height = ''; 
      }
@@ -549,6 +556,7 @@ import { flsModules } from "./modules.js";
      }
 
  }
+
 
 
 });
