@@ -24,6 +24,27 @@ import { flsModules } from "./modules.js";
       }, 0);
     });
   }
+
+  
+function setMinHeight() {
+  // Проверяем ширину экрана
+  if (window.matchMedia("(max-width: 30.061em)").matches) {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+ }
+ 
+ // Установить высоту при загрузке
+ setMinHeight();
+ 
+ // Обновить при изменении ширины
+ window.addEventListener('resize', () => {
+  // Перепроверяем ширину, и только тогда вызываем `setMinHeight`
+  if (window.innerWidth !== document.documentElement.clientWidth) {
+      setMinHeight();
+  }
+ });
+ 
+ 
   
 
 
@@ -179,9 +200,9 @@ import { flsModules } from "./modules.js";
   const footerSection = document.querySelector('.footer');
   const footerContainer = document.querySelector('.footer__container');
 
- setTimeout(() => {
+  setTimeout(() => {
 
-     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    //  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
      ScrollTrigger.refresh();
 
    if (heroImg) {
@@ -269,20 +290,28 @@ import { flsModules } from "./modules.js";
            start: "top top",
            end: "70% center",
            scrub: 1,
-           onEnter: () => {
-             heroImg.classList.remove('_anim-end');
-             logoAc.classList.remove('_anim-end');
-           },
+          //  onEnter: () => {
+          //   //  heroImg.classList.remove('_anim-end');
+          //   //  logoAc.classList.remove('_anim-end');
+          //  },
            onUpdate: (self) => {
-             if (self.direction < 0) {
+            //  if (self.direction < 0) {
+            //   //  logoAc.classList.remove('_anim-end');
+            //   //  heroImg.classList.remove('_anim-end');
+            //  }
+             let progress = self.progress; 
+             if (progress > 0.9) {
+              heroImg.classList.add('_anim-end');
+               document.documentElement.classList.add('_header-bg');
+              } else {
+               document.documentElement.classList.remove('_header-bg');
                heroImg.classList.remove('_anim-end');
-               logoAc.classList.remove('_anim-end');
              }
            },
-           onLeave: () => {
-             heroImg.classList.add('_anim-end');
-             logoAc.classList.add('_anim-end');
-           }
+          //  onLeave: () => {
+            //  heroImg.classList.add('_anim-end');
+            //  logoAc.classList.add('_anim-end');
+          //  }
          },
          width: logoAcPosition.width,
          left: logoAcPosition.left + logoAcPosition.width / 2,
@@ -300,9 +329,11 @@ import { flsModules } from "./modules.js";
          end: "bottom top",
          scrub: 1,
          onEnter: () => document.documentElement.classList.add('_who-block'),
+         onEnter: () => document.documentElement.classList.add('_who-block-start'),
          onLeave: () => document.documentElement.classList.remove('_who-block'),
          onEnterBack: () => document.documentElement.classList.add('_who-block'),
          onLeaveBack: () => document.documentElement.classList.remove('_who-block'),
+         onLeaveBack: () => document.documentElement.classList.remove('_who-block-start'),
        },
      });
    }
@@ -557,10 +588,10 @@ import { flsModules } from "./modules.js";
 
  }
 
-
-
+ 
+ 
+ 
 });
-
 
 
 
@@ -645,17 +676,24 @@ document.addEventListener("DOMContentLoaded", function() {
      // // Наблюдаем за изменениями в элементе body (можно выбрать другой контейнер, если нужно)
      // resizeObserver.observe(document.body);
      
-     // Создаем ResizeObserver для отслеживания изменений размера окна
+     let lastWidth = window.innerWidth;
+
      const resizeObserver = new ResizeObserver(entries => {
-       requestAnimationFrame(() => {
-         entries.forEach(entry => {
-           initSplitType();
+         requestAnimationFrame(() => {
+             entries.forEach(entry => {
+                 const currentWidth = entry.contentRect.width;
+                 // Запускаем initSplitType() только если изменилась ширина
+                 if (currentWidth !== lastWidth) {
+                     initSplitType();
+                     lastWidth = currentWidth; // Обновляем lastWidth
+                 }
+             });
          });
-       });
      });
-     // Наблюдаем за изменениями в элементе body (можно выбрать другой контейнер, если нужно)
+     
+     // Наблюдаем за изменениями в элементе body
      resizeObserver.observe(document.body);
-  
+     
      // =======================================================================
 
 
@@ -696,6 +734,9 @@ window.addEventListener('load', () => {
   setMaxHeight();
   mediaQuery.addEventListener('change', setMaxHeight);
 });
+
+
+
 
 
 

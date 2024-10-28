@@ -4161,6 +4161,13 @@
             document.documentElement.classList.add("loaded");
         }), 0);
     }));
+    function setMinHeight() {
+        if (window.matchMedia("(max-width: 30.061em)").matches) document.documentElement.style.setProperty("--vh", `${window.innerHeight * .01}px`);
+    }
+    setMinHeight();
+    window.addEventListener("resize", (() => {
+        if (window.innerWidth !== document.documentElement.clientWidth) setMinHeight();
+    }));
     const header = document.querySelector(".header");
     const headerIconMenu = document.querySelector(".icon-menu");
     const lockPaddingElements = document.querySelectorAll("[data-lp]");
@@ -4271,7 +4278,6 @@
         const footerSection = document.querySelector(".footer");
         const footerContainer = document.querySelector(".footer__container");
         setTimeout((() => {
-            ScrollTrigger.getAll().forEach((trigger => trigger.kill()));
             ScrollTrigger.refresh();
             if (heroImg) {
                 gsap.set(heroImg, {
@@ -4335,19 +4341,15 @@
                             start: "top top",
                             end: "70% center",
                             scrub: 1,
-                            onEnter: () => {
-                                heroImg.classList.remove("_anim-end");
-                                logoAc.classList.remove("_anim-end");
-                            },
                             onUpdate: self => {
-                                if (self.direction < 0) {
+                                let progress = self.progress;
+                                if (progress > .9) {
+                                    heroImg.classList.add("_anim-end");
+                                    document.documentElement.classList.add("_header-bg");
+                                } else {
+                                    document.documentElement.classList.remove("_header-bg");
                                     heroImg.classList.remove("_anim-end");
-                                    logoAc.classList.remove("_anim-end");
                                 }
-                            },
-                            onLeave: () => {
-                                heroImg.classList.add("_anim-end");
-                                logoAc.classList.add("_anim-end");
                             }
                         },
                         width: logoAcPosition.width,
@@ -4364,9 +4366,11 @@
                     end: "bottom top",
                     scrub: 1,
                     onEnter: () => document.documentElement.classList.add("_who-block"),
+                    onEnter: () => document.documentElement.classList.add("_who-block-start"),
                     onLeave: () => document.documentElement.classList.remove("_who-block"),
                     onEnterBack: () => document.documentElement.classList.add("_who-block"),
-                    onLeaveBack: () => document.documentElement.classList.remove("_who-block")
+                    onLeaveBack: () => document.documentElement.classList.remove("_who-block"),
+                    onLeaveBack: () => document.documentElement.classList.remove("_who-block-start")
                 }
             });
             if (focusSection) {
@@ -4582,10 +4586,15 @@
             }));
         }
         initSplitType();
+        let lastWidth = window.innerWidth;
         const resizeObserver = new ResizeObserver((entries => {
             requestAnimationFrame((() => {
                 entries.forEach((entry => {
-                    initSplitType();
+                    const currentWidth = entry.contentRect.width;
+                    if (currentWidth !== lastWidth) {
+                        initSplitType();
+                        lastWidth = currentWidth;
+                    }
                 }));
             }));
         }));

@@ -5,7 +5,11 @@
   left: 0;
   width: 100%;
   z-index: 10;
+	transition: background-color .2s ease;
 	&._who-block {}
+	._header-bg & {
+		background-color: $dark;
+	}
   // background-color: $dark;
 	// .header__wrapper
 	&__wrapper {
@@ -30,12 +34,16 @@
 				width: 100%;
 				transition: width .65s cubic-bezier(.22,.89,.34,.96) 1.5s, opacity .45s ease 1.5s, background-color .3s ease 0s;
 			}
-			._who-block & {
-				background-color: $dark;
+			// ._who-block & {
+			// 	background-color: $dark;
+			// }
+			._who-block-start & {
+				opacity: 0;
+				transition: width .65s cubic-bezier(.22,.89,.34,.96) 0s, opacity .45s ease 0s, background-color .3s ease 0s;
 			}
-			.menu-open & {
-				background-color: $mainColor;
-			}
+			// .menu-open & {
+			// 	background-color: $mainColor;
+			// }
     }
 		@media (min-width:toEm(980.98)){
 			  padding-top: toRem(30);
@@ -69,9 +77,9 @@
 			width: 100%;
 			height: auto;
 			filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
-			._who-block & {
-				filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
-			}
+			// ._who-block & {
+			// 	filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
+			// }
 			.menu-open & {
 				filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
 			}
@@ -181,7 +189,11 @@
 			  flex-direction: column;
 				justify-content: center;
 				min-height: 100%;
+				// min-height: calc(var(--vh, 1vh) * 100);
+				// height: calc(var(--vh, 1vh) * 100);
 				row-gap: toRem(40);
+		}
+		@media (max-width: toEm(980.98)) and (min-width: $mobileSmall) {
 		}
   }
   // .menu__item
@@ -283,9 +295,9 @@
 					transition-delay: .2s;
 				}
 			}
-			._who-block & {
-				color: $dark;
-			}
+			// ._who-block & {
+			// 	color: $dark;
+			// }
 			.menu-open & {
 				color: $mainColor;
 			}
@@ -326,9 +338,9 @@
 			width: 100%;
 			height: toRem(2);
 			background-color: $mainColor;
-			._who-block & {
-				background-color: $dark;
-			}
+			// ._who-block & {
+			// 	background-color: $dark;
+			// }
 		}
 		&::before {
 			top: 20%;

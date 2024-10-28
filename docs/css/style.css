@@ -102,7 +102,6 @@ body {
   touch-action: none
 }
 .wrapper {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden
@@ -272,7 +271,11 @@ body * {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10
+  z-index: 10;
+  transition: background-color .2s ease
+}
+._header-bg .header {
+  background-color: #151d20
 }
 .header__wrapper {
   position: relative;
@@ -300,11 +303,9 @@ body * {
   width: 100%;
   transition: width .65s cubic-bezier(.22,.89,.34,.96) 1.5s,opacity .45s ease 1.5s,background-color .3s ease 0s
 }
-._who-block .header__wrapper::after {
-  background-color: #151d20
-}
-.menu-open .header__wrapper::after {
-  background-color: #919268
+._who-block-start .header__wrapper::after {
+  opacity: 0;
+  transition: width .65s cubic-bezier(.22,.89,.34,.96) 0s,opacity .45s ease 0s,background-color .3s ease 0s
 }
 .header__logo {
   position: relative;
@@ -323,10 +324,6 @@ body * {
   height: auto;
   -webkit-filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
   filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%)
-}
-._who-block .header__logo img {
-  -webkit-filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
-  filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%)
 }
 .menu-open .header__logo img {
   -webkit-filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
@@ -369,21 +366,11 @@ body * {
   transition: transform .5s cubic-bezier(.22,.89,.34,.96) 0s,color .3s ease;
   transition: transform .5s cubic-bezier(.22,.89,.34,.96) 0s,color .3s ease,-webkit-transform .5s cubic-bezier(.22,.89,.34,.96) 0s
 }
-._who-block .menu__link span {
-  color: #151d20
-}
 .menu-open .menu__link span {
   color: #919268
 }
 .icon-menu {
   display: none
-}
-.advantages,
-.contacts,
-.hero,
-.values,
-.who {
-  min-height: 100svh
 }
 .hero {
   opacity: 0;
@@ -415,10 +402,6 @@ body * {
 }
 .hero__img._anim-end {
   z-index: 11
-}
-._who-block .hero__img {
-  -webkit-filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%);
-  filter: invert(10%) sepia(7%) saturate(1566%) hue-rotate(151deg) brightness(100%) contrast(98%)
 }
 .menu-open .hero__img {
   -webkit-filter: invert(70%) sepia(3%) saturate(2608%) hue-rotate(23deg) brightness(80%) contrast(98%);
@@ -509,7 +492,6 @@ body * {
 .focus__container,
 .values__container,
 .who__container {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -796,7 +778,6 @@ body * {
   font-size: .9375rem
 }
 .focus {
-  min-height: 100svh;
   position: relative;
   overflow: hidden
 }
@@ -876,7 +857,7 @@ body * {
   font-size: 1.125rem;
   color: #e0ff05;
   background-color: #919268;
-  min-height: 4.0625rem;
+  height: 4.0625rem;
   display: grid;
   place-items: center;
   padding: .625rem;
@@ -1080,11 +1061,28 @@ body * {
   .footer__item:not(:last-child) ._who-block .footer__link::before {
     background-color: #151d20
   }
+  .advantages,
+  .contacts,
+  .hero,
+  .values,
+  .who {
+    min-height: 100svh
+  }
+  .wrapper {
+    min-height: 100svh
+  }
   .hero {
     padding-bottom: 14vh
   }
   .hero__btn {
     bottom: 1.25rem
+  }
+  .advantages__container,
+  .contacts__container,
+  .focus__container,
+  .values__container,
+  .who__container {
+    min-height: 100%
   }
   .who {
     padding-top: 8.125rem;
@@ -1098,6 +1096,9 @@ body * {
   .focus,
   .values {
     padding-top: 8.125rem
+  }
+  .focus {
+    min-height: 100svh
   }
   .focus__subtitle {
     text-align: center
@@ -1116,7 +1117,7 @@ body * {
   }
   .footer__link.link-form {
     padding: .3125rem 1.875rem;
-    min-height: 2.4375rem;
+    height: 2.4375rem;
     display: grid;
     place-items: center;
     width: -webkit-fit-content;
@@ -1702,10 +1703,6 @@ body * {
     height: .125rem;
     background-color: #919268
   }
-  ._who-block .icon-menu::after,
-  ._who-block .icon-menu::before {
-    background-color: #151d20
-  }
   .icon-menu::before {
     top: 20%
   }
@@ -1892,11 +1889,28 @@ body * {
   .input {
     font-size: 1.125rem
   }
+  .advantages,
+  .contacts,
+  .hero,
+  .values,
+  .who {
+    min-height: calc(var(--vh,1vh)*100)
+  }
+  .wrapper {
+    min-height: calc(var(--vh,1vh)*100)
+  }
   .hero {
     padding-bottom: 10vh
   }
   .hero__btn {
     bottom: .3125rem
+  }
+  .advantages__container,
+  .contacts__container,
+  .focus__container,
+  .values__container,
+  .who__container {
+    min-height: calc(var(--vh,1vh)*100)
   }
   .who {
     padding-top: 5rem;
@@ -1922,6 +1936,9 @@ body * {
   }
   .slide-advt__title {
     font-size: 2.625rem
+  }
+  .focus {
+    min-height: calc(var(--vh,1vh)*100)
   }
   .focus__el {
     width: 35%
